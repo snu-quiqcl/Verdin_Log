@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OscilloscopeWidget</class>
+ <widget class="QWidget" name="OscilloscopeWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>665</width>
+    <height>389</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Oscilloscope</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" rowspan="3">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QFrame" name="frame">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 0, 0);</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="ch1Label">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 255, 0);</string>
+          </property>
+          <property name="text">
+           <string>1</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ch1Y">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="text">
+           <string>ch1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ch2Label">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(36, 127, 13);</string>
+          </property>
+          <property name="text">
+           <string>2</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ch2Y">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="text">
+           <string>ch2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ch3Label">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(0, 85, 255);</string>
+          </property>
+          <property name="text">
+           <string>3</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ch3Y">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="text">
+           <string>ch3</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ch4Label">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 0, 127);</string>
+          </property>
+          <property name="text">
+           <string>4</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="ch4Y">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="text">
+           <string>ch4</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="timebase">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="text">
+           <string>timebase</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="widget" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>400</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="buttonLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinimumSize</enum>
+       </property>
+       <item>
+        <widget class="QPushButton" name="pushButton_Ch1">
+         <property name="text">
+          <string>Ch1</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_Ch2">
+         <property name="text">
+          <string>Ch2</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_Ch3">
+         <property name="text">
+          <string>Ch3</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_Ch4">
+         <property name="text">
+          <string>Ch4</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="runStopButton">
+           <property name="text">
+            <string>RUN/
+STOP</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="runStopStatus">
+           <property name="text">
+            <string>STOP</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="singleButton">
+           <property name="text">
+            <string>Single</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="triggerStatus">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Sweep mode</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="sweepModeComboBox">
+             <item>
+              <property name="text">
+               <string>AUTO</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>NORM</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="triggerForceButton">
+           <property name="text">
+            <string>Trigger
+Force</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Source</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="triggerSourceComboBox">
+             <item>
+              <property name="text">
+               <string>CHAN1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>CHAN2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>CHAN3</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>CHAN4</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>EXT</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="updateButton">
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>updateButton</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>updatePlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>457</x>
+     <y>371</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>runStopButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>runStop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>459</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sweepModeComboBox</sender>
+   <signal>activated(QString)</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>sweepModeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>triggerForceButton</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>triggerForced()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>560</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>triggerSourceComboBox</sender>
+   <signal>activated(QString)</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>triggerSourceChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>654</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>singleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>single()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>601</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>openDevice()</slot>
+  <slot>updatePlot()</slot>
+  <slot>runStop()</slot>
+  <slot>single()</slot>
+  <slot>sweepModeChanged(QString)</slot>
+  <slot>triggerForced()</slot>
+  <slot>triggerSourceChanged(QString)</slot>
+ </slots>
+</ui>

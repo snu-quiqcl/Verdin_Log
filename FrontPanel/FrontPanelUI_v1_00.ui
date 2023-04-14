@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FrontPanelDialog</class>
+ <widget class="QDialog" name="FrontPanelDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>264</width>
+    <height>308</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Verdi Front Panel</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="1">
+      <widget class="QLabel" name="keyStatusLabel">
+       <property name="text">
+        <string>On</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>KEY STATUS</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="laserEnableButton">
+       <property name="text">
+        <string>Turn on</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="laserEnableStatus">
+       <property name="text">
+        <string>Off</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>LASER ENABLE</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="shutterButton">
+       <property name="text">
+        <string>Open</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="shutterStatusLabel">
+       <property name="text">
+        <string>Closed</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>SHUTTER</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Power</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QPushButton" name="powerSetButton">
+       <property name="text">
+        <string>Set</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QDoubleSpinBox" name="powerSetValue">
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>0.010000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>15.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="updateButton">
+     <property name="text">
+      <string>Update status</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="textEdit">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>shutterButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FrontPanelDialog</receiver>
+   <slot>shutterButtonPressed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>259</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>158</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>laserEnableButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FrontPanelDialog</receiver>
+   <slot>laserEnableButtonPressed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>259</x>
+     <y>50</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>158</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>updateButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FrontPanelDialog</receiver>
+   <slot>updateButtonPressed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>158</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>158</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>powerSetButton</sender>
+   <signal>clicked()</signal>
+   <receiver>FrontPanelDialog</receiver>
+   <slot>powerSetButtonPressed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>259</x>
+     <y>97</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>158</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>shutterButtonPressed()</slot>
+  <slot>laserEnableButtonPressed()</slot>
+  <slot>updateButtonPressed()</slot>
+  <slot>powerSetButtonPressed()</slot>
+ </slots>
+</ui>

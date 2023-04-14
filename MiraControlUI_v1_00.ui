@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>874</width>
+    <height>586</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Mira Control</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>874</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuChiller">
+    <property name="title">
+     <string>Chiller</string>
+    </property>
+    <addaction name="actionConnection_to_Chiller"/>
+    <addaction name="separator"/>
+    <addaction name="actionChiller_Control"/>
+   </widget>
+   <widget class="QMenu" name="menuVerdi">
+    <property name="title">
+     <string>Verdi</string>
+    </property>
+    <addaction name="actionConnection_to_Verdi"/>
+    <addaction name="separator"/>
+    <addaction name="actionFront_Panel"/>
+    <addaction name="separator"/>
+    <addaction name="actionLaser_Status"/>
+    <addaction name="actionServo_Status"/>
+    <addaction name="actionDiode_Parameters"/>
+    <addaction name="actionFault_Status"/>
+   </widget>
+   <widget class="QMenu" name="menuOscilloscope">
+    <property name="title">
+     <string>Oscilloscope</string>
+    </property>
+   </widget>
+   <addaction name="menuChiller"/>
+   <addaction name="menuVerdi"/>
+   <addaction name="menuOscilloscope"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionFront_Panel">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Front Panel</string>
+   </property>
+  </action>
+  <action name="actionLaser_Status">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Laser Status</string>
+   </property>
+  </action>
+  <action name="actionDiode_Parameters">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Diode Parameters</string>
+   </property>
+  </action>
+  <action name="actionFault_Status">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Fault Status</string>
+   </property>
+  </action>
+  <action name="actionServo_Status">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Servo Status</string>
+   </property>
+  </action>
+  <action name="actionConnection_to_Verdi">
+   <property name="text">
+    <string>Connection to Verdi</string>
+   </property>
+  </action>
+  <action name="actionConnection_to_Chiller">
+   <property name="text">
+    <string>Connection to Chiller</string>
+   </property>
+  </action>
+  <action name="actionChiller_Control">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Chiller Control</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionFront_Panel</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openVerdiFrontPanel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLaser_Status</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openVerdiLaserStatus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDiode_Parameters</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openVerdiDiodeParameters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFault_Status</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openVerdiFaultStatus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionServo_Status</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openVerdiServoStatus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionConnection_to_Verdi</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openVerdiConnection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionConnection_to_Chiller</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openChillerConnection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionChiller_Control</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openChillerControlPanel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>openVerdiFrontPanel()</slot>
+  <slot>openVerdiLaserStatus()</slot>
+  <slot>openVerdiServoStatus()</slot>
+  <slot>openVerdiDiodeParameters()</slot>
+  <slot>openVerdiFaultStatus()</slot>
+  <slot>openVerdiConnection()</slot>
+  <slot>openChillerControlPanel()</slot>
+  <slot>openChillerConnection()</slot>
+ </slots>
+</ui>
