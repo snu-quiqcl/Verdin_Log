@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>874</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuChiller">
@@ -35,6 +35,13 @@
     <property name="title">
      <string>Verdi</string>
     </property>
+    <widget class="QMenu" name="menuVerdi_Log">
+     <property name="title">
+      <string>Verdi_Log</string>
+     </property>
+     <addaction name="actionStart"/>
+     <addaction name="actionEnd"/>
+    </widget>
     <addaction name="actionConnection_to_Verdi"/>
     <addaction name="separator"/>
     <addaction name="actionFront_Panel"/>
@@ -43,6 +50,7 @@
     <addaction name="actionServo_Status"/>
     <addaction name="actionDiode_Parameters"/>
     <addaction name="actionFault_Status"/>
+    <addaction name="menuVerdi_Log"/>
    </widget>
    <widget class="QMenu" name="menuOscilloscope">
     <property name="title">
@@ -126,6 +134,16 @@
    </property>
    <property name="text">
     <string>Oscilloscope control</string>
+   </property>
+  </action>
+  <action name="actionStart">
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="actionEnd">
+   <property name="text">
+    <string>End</string>
    </property>
   </action>
  </widget>
