@@ -171,7 +171,7 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
             self.ui.actionVerdi_Log_Start.setEnabled(True)
         
         if enable == True:
-            self.ui.actionVerdi_Log_end.setEnabled(False)
+            self.ui.actionVerdi_Log_End.setEnabled(False)
         
 
         

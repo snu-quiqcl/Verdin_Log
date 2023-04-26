@@ -49,7 +49,7 @@ class Verdi:
         19: 'Diode 1 Under Volt Fault', 47: '', \
         20: 'Diode 2 Under Volt Fault', 48: 'Head Communication Fault'}
 
-    def __init__(self, defaultIPAddress = '10.1.1.141', defaultTCPPort = 18181):
+    def __init__(self, defaultIPAddress = '172.22.22.86', defaultTCPPort = 18181):
         self.IPAddress = defaultIPAddress
         self.TCPPort = defaultTCPPort
         self.socket = None
