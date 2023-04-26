@@ -43,6 +43,8 @@ class Verdi_Logger:
         
     def loging_func(self):
         v18 = self.parent.verdi
+        index_ = 0
+        
         if v18.isConnected():
             log_header = 'Data and time, Laser status, Laser current power (W), Laser current, Laser set power (W)'
             log_header += ', LBO status, LBO current temp (C), LBO current, LBO set temp (C)'
@@ -62,21 +64,21 @@ class Verdi_Logger:
             
             while True:
                 try:
-                    print('Collecting new data at', datetime.datetime.now().isoformat())
-                    log_line = ('%s, %s, %s, %s' % v18.getServoInfo('LRS', 'P', 'C', 'SP'))
-                    log_line += (', %s, %s, %s, %s' % v18.getServoInfo('LBOSS', 'LBOT', 'LBOD', 'LBOST'))
-                    log_line += (', %s, %s, %s, %s' % v18.getServoInfo('VSS', 'VT', 'VD', 'VST'))
-                    log_line += (', %s, %s, %s, %s' % v18.getServoInfo('ESS', 'ET', 'ED', 'EST'))
-                    log_line += (', %s, %s, %s, %s' % v18.getServoInfo('D1SS', 'D1T', 'D1TD', 'D1ST'))
-                    log_line += (', %s' % v18.query('D1C')[1])
-                    log_line += (', %s, %s, %s, %s' % v18.getServoInfo('D2SS', 'D2T', 'D2TD', 'D2ST'))
-                    log_line += (', %s' % v18.query('D2C')[1])
-                    log_line += (', %s, %s, %s' % (v18.query('BT')[1], v18.query('D1HST')[1], v18.query('D2HST')[1]))
-                    logfile.write(log_line)
-            
-                    #print(log_line)
+                    if index_ == 0 :
+                        print('Collecting new data at', datetime.datetime.now().isoformat())
+                        log_line = ('%s, %s, %s, %s' % v18.getServoInfo('LRS', 'P', 'C', 'SP'))
+                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('LBOSS', 'LBOT', 'LBOD', 'LBOST'))
+                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('VSS', 'VT', 'VD', 'VST'))
+                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('ESS', 'ET', 'ED', 'EST'))
+                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('D1SS', 'D1T', 'D1TD', 'D1ST'))
+                        log_line += (', %s' % v18.query('D1C')[1])
+                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('D2SS', 'D2T', 'D2TD', 'D2ST'))
+                        log_line += (', %s' % v18.query('D2C')[1])
+                        log_line += (', %s, %s, %s' % (v18.query('BT')[1], v18.query('D1HST')[1], v18.query('D2HST')[1]))
+                        logfile.write(log_line)
+                
+                        #print(log_line)
                     
-                    time.sleep(60)
                 except KeyboardInterrupt:
                     break
                 if event.is_set():
@@ -84,6 +86,10 @@ class Verdi_Logger:
                     logfile.close()
                     print('File saved...')
                     return
+                
+                time.sleep(1)
+                
+                index_ = ( index_ + 1 ) % 60
                 
             logfile.close()
         else:
