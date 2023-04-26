@@ -23,7 +23,7 @@ for each_path in new_path_list:
 
 import dataLogger_v1_03 as dataLogger
 log_filename_prefix = os.path.abspath(dirname + '/logs/vanadate_temp_')
-import Verdi_v1_02 as Verdi
+import V18.Verdi_v1_02 as Verdi
 Verdi.DEBUG = False
 
 import time, datetime

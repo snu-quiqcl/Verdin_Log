@@ -56,7 +56,7 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
         self.verdiMenuActionList = [self.ui.actionDiode_Parameters, \
             self.ui.actionFault_Status, self.ui.actionFront_Panel, \
             self.ui.actionLaser_Status, self.ui.actionServo_Status,\
-            self.ui.actionVerdi_Log_Start]
+            self.ui.actionVerdi_Log_Start, self.ui.menuVerdi_Log]
         
         self.verdi = Verdi.Verdi()
 
@@ -168,7 +168,10 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
             eachAction.setEnabled(enable)
         
         if enable == False:
-            self.ui.actionVerdi_Log_Start.setEnabled(enable)
+            self.ui.actionVerdi_Log_Start.setEnabled(True)
+        
+        if enable == True:
+            self.ui.actionVerdi_Log_end.setEnabled(False)
         
 
         

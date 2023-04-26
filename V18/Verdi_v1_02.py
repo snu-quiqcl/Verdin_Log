@@ -320,9 +320,11 @@ class Verdi:
             print('Raw response:', response)
         if response == 'Error, invalid command':
             return (1, response)
-        response.replace(queryString,'')
-        response.replace('\n','')
-        response.replace('VERD','')
+        response = response.replace(queryString,'')
+        response = response.replace('\n','')
+        response = response.replace('\r','')
+        response = response.replace('?','')
+        response = response.replace('VERD','')
         return (0, response)
         
 
