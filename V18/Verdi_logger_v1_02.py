@@ -35,71 +35,78 @@ class Verdi_Logger:
     def __init__(self, parent = None):
         self.parent = parent
         self.logger_thread = Thread(target=self.loging_func)
+        self.logger_thread.start()
+        event.clear()
         
         
     def start_log(self):
-        self.logger_thread.start()
+        if self.logger_thread.is_alive():
+            event.set()
+        else:
+            raise Exception('Dead thread')
         print('Start Log')
         
     def loging_func(self):
         v18 = self.parent.verdi
         index_ = 0
-        
-        if v18.isConnected():
-            log_header = 'Data and time, Laser status, Laser current power (W), Laser current, Laser set power (W)'
-            log_header += ', LBO status, LBO current temp (C), LBO current, LBO set temp (C)'
-            log_header += ', VANADATE status, VANADATE current temp (C), VANADATE current, VANADATE set temp (C)'
-            log_header += ', ETALON status, ETALON current temp (C), ETALON current, ETALON set temp (C)'
-            log_header += ', DIODE1 status, DIODE1 current temp (C), DIODE1 temp current, DIODE1 set temp (C), DIODE1 current (A)'
-            log_header += ', DIODE2 status, DIODE2 current temp (C), DIODE2 temp current, DIODE2 set temp (C), DIODE2 current (A)'
-            log_header += ', Baseplate Temp (C), Heatsink Temp 1 (C), Heatsink Temp 2 (C)'
-            
-            #print(log_header)
-            
-            logfile = dataLogger.dataLogger(filePrefix = log_filename_prefix, \
-                                        max_write_count_to_flush = 60,\
-                                        max_interval_to_flush = datetime.timedelta(seconds=20), \
-                                        newLogfileInterval=datetime.timedelta(hours=12), \
-                                        header = log_header, print_header_at_new_file = True)
-            
-            while True:
-                try:
-                    if index_ == 0 :
-                        print('Collecting new data at', datetime.datetime.now().isoformat())
-                        log_line = ('%s, %s, %s, %s' % v18.getServoInfo('LRS', 'P', 'C', 'SP'))
-                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('LBOSS', 'LBOT', 'LBOD', 'LBOST'))
-                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('VSS', 'VT', 'VD', 'VST'))
-                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('ESS', 'ET', 'ED', 'EST'))
-                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('D1SS', 'D1T', 'D1TD', 'D1ST'))
-                        log_line += (', %s' % v18.query('D1C')[1])
-                        log_line += (', %s, %s, %s, %s' % v18.getServoInfo('D2SS', 'D2T', 'D2TD', 'D2ST'))
-                        log_line += (', %s' % v18.query('D2C')[1])
-                        log_line += (', %s, %s, %s' % (v18.query('BT')[1], v18.query('D1HST')[1], v18.query('D2HST')[1]))
-                        logfile.write(log_line)
+        while True:
+            event.wait()
+            index_ = 0
+            if v18.isConnected():
+                log_header = 'Data and time, Laser status, Laser current power (W), Laser current, Laser set power (W)'
+                log_header += ', LBO status, LBO current temp (C), LBO current, LBO set temp (C)'
+                log_header += ', VANADATE status, VANADATE current temp (C), VANADATE current, VANADATE set temp (C)'
+                log_header += ', ETALON status, ETALON current temp (C), ETALON current, ETALON set temp (C)'
+                log_header += ', DIODE1 status, DIODE1 current temp (C), DIODE1 temp current, DIODE1 set temp (C), DIODE1 current (A)'
+                log_header += ', DIODE2 status, DIODE2 current temp (C), DIODE2 temp current, DIODE2 set temp (C), DIODE2 current (A)'
+                log_header += ', Baseplate Temp (C), Heatsink Temp 1 (C), Heatsink Temp 2 (C)'
                 
-                        #print(log_line)
+                #print(log_header)
+                
+                logfile = dataLogger.dataLogger(filePrefix = log_filename_prefix, \
+                                            max_write_count_to_flush = 60,\
+                                            max_interval_to_flush = datetime.timedelta(seconds=20), \
+                                            newLogfileInterval=datetime.timedelta(hours=12), \
+                                            header = log_header, print_header_at_new_file = True)
+                
+                while True:
+                    try:
+                        if index_ == 0 :
+                            print('Collecting new data at', datetime.datetime.now().isoformat())
+                            log_line = ('%s, %s, %s, %s' % v18.getServoInfo('LRS', 'P', 'C', 'SP'))
+                            log_line += (', %s, %s, %s, %s' % v18.getServoInfo('LBOSS', 'LBOT', 'LBOD', 'LBOST'))
+                            log_line += (', %s, %s, %s, %s' % v18.getServoInfo('VSS', 'VT', 'VD', 'VST'))
+                            log_line += (', %s, %s, %s, %s' % v18.getServoInfo('ESS', 'ET', 'ED', 'EST'))
+                            log_line += (', %s, %s, %s, %s' % v18.getServoInfo('D1SS', 'D1T', 'D1TD', 'D1ST'))
+                            log_line += (', %s' % v18.query('D1C')[1])
+                            log_line += (', %s, %s, %s, %s' % v18.getServoInfo('D2SS', 'D2T', 'D2TD', 'D2ST'))
+                            log_line += (', %s' % v18.query('D2C')[1])
+                            log_line += (', %s, %s, %s' % (v18.query('BT')[1], v18.query('D1HST')[1], v18.query('D2HST')[1]))
+                            logfile.write(log_line)
                     
-                except KeyboardInterrupt:
-                    break
-                if event.is_set():
-                    print('Stop the log...')
-                    logfile.close()
-                    print('File saved...')
-                    return
+                            #print(log_line)
+                        
+                    except KeyboardInterrupt:
+                        break
+                    if not event.is_set():
+                        print('Stop the log...')
+                        logfile.close()
+                        print('File saved...')
+                        break
+                    
+                    time.sleep(1)
+                    
+                    index_ = ( index_ + 1 ) % 60
                 
-                time.sleep(1)
-                
-                index_ = ( index_ + 1 ) % 60
-                
-            logfile.close()
-        else:
-            raise Exception('Verdi is not connected')
+                logfile.close()
+            else:
+                raise Exception('Verdi is not connected')
     
     def end_log(self):
         if self.logger_thread.is_alive():
-            event.set()
+            event.clear()
         else:
-            raise Exception('Closing Not opened thread')
+            raise Exception('Closing not opened thread')
 
 if __name__ == '__main__':
     v18 = Verdi.Verdi()
