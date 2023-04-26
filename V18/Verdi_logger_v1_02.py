@@ -34,7 +34,7 @@ event = Event()
 class Verdi_Logger:
     def __init__(self, parent = None):
         self.parent = parent
-        self.logger_thread = Thread(target=self.loging_func,args = None)
+        self.logger_thread = Thread(target=self.loging_func)
         
         
     def start_log(self):
