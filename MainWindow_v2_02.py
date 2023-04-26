@@ -30,7 +30,7 @@ from ConnectionDialogWidget_v1_00 import ConnectDialog
 #Oscilloscope
 from DSO_X_3034A.DSO_X_3034A_TCPClient_v1_00 import DSO_X_3034A
 from DSO_X_3034A.DSO_X_3034A_Widget_v1_02 import DSO_X_3034A_Widget
-from Verdi_logger_v1_02 import Verdi_Logger
+from V18.Verdi_logger_v1_02 import Verdi_Logger
 
 #import BME280.Adafruit_BME280 as AF_BME280
 #from meteocalc import Temp as TemperatureClass
@@ -120,11 +120,17 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
         self.informationDialog.updateServoStatus()
         self.informationDialog.exec_()
         
-    def openVerdi_Log_End(self):
-        print('hello')
+    def openVerdi_Log_Start(self):
+        print('Verdi Log Start')
+        self.verdi_Logger.start_log()
+        self.ui.actionVerdi_Log_Start.setEnabled(False)
+        self.ui.actionVerdi_Log_End.setEnabled(True)
         
     def openVerdi_Log_End(self):
-        print('hello2')
+        print('Verdi Log End')
+        self.verdi_Logger.end_log()
+        self.ui.actionVerdi_Log_End.setEnabled(False)
+        self.ui.actionVerdi_Log_Start.setEnabled(True)
 
 
     ###################################################################
@@ -160,6 +166,9 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
     def enableSubMenus(self, menuActionList, enable = True):
         for eachAction in menuActionList:
             eachAction.setEnabled(enable)
+        
+        if enable == False:
+            self.ui.actionVerdi_Log_Start.setEnabled(enable)
         
 
         
