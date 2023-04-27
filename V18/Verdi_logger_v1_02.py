@@ -107,6 +107,9 @@ class Verdi_Logger:
             self.event.clear()
         else:
             raise Exception('Closing not opened thread')
+            
+    def log_running(self):
+        return self.event.isSet()
 
 if __name__ == '__main__':
     v18 = Verdi.Verdi()

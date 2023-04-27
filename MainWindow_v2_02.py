@@ -176,6 +176,18 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
 
         
     def closeEvent(self, event):
+        if self.verdi_Logger.log_running():
+            buttonReply = QtWidgets.QMessageBox.question(self, 'Warning', \
+                'Logging thread is are still open.' +\
+                ' Do you really want to close the window?', \
+                QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+            if buttonReply == QtWidgets.QMessageBox.Yes:
+                if self.verdi_Logger.log_running():
+                    self.verdi_Logger.end_log()
+            else:
+                event.ignore()
+                return
+            
         if (self.verdi.isConnected() or self.chiller.isConnected() \
             or self.oscilloscope.isConnected()):
             buttonReply = QtWidgets.QMessageBox.question(self, 'Warning', \
