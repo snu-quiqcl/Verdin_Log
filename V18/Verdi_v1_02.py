@@ -13,6 +13,7 @@ import time
 import sys
 import getopt
 import datetime
+from threading import Thread, Event, Lock
 
 DEBUG = True
 
@@ -53,6 +54,7 @@ class Verdi:
         self.IPAddress = defaultIPAddress
         self.TCPPort = defaultTCPPort
         self.socket = None
+        self.lock_ = Lock()
         
     def isConnected(self):
         if self.socket != None:
@@ -297,35 +299,37 @@ class Verdi:
 
 
     def command(self, cmd):
-        self.socket.send(bytes(cmd+'\r\n', 'utf-8'))
-        response = self.socket.recv(100)[:-2].decode('utf-8')
-        if DEBUG:
-            print('Raw response:', response)
-        if len(response) == 0:
-            return 0
-        if response == 'Error, invalid command':
-            return 1
-        if response == 'Error, data out of range':
-            return 2
-        if DEBUG:
-            print('Unknown response:', response)
-        self.lastErrorMessage = response
-        return 3
+        with self.lock_:
+            self.socket.send(bytes(cmd+'\r\n', 'utf-8'))
+            response = self.socket.recv(100)[:-2].decode('utf-8')
+            if DEBUG:
+                print('Raw response:', response)
+            if len(response) == 0:
+                return 0
+            if response == 'Error, invalid command':
+                return 1
+            if response == 'Error, data out of range':
+                return 2
+            if DEBUG:
+                print('Unknown response:', response)
+            self.lastErrorMessage = response
+            return 3
         
         
     def query(self, queryString):
-        self.socket.send(bytes('?%s\r\n' % queryString, 'utf-8'))
-        response = self.socket.recv(100)[:-2].decode('utf-8')
-        if DEBUG:
-            print('Raw response:', response)
-        if response == 'Error, invalid command':
-            return (1, response)
-        response = response.replace(queryString,'')
-        response = response.replace('\n','')
-        response = response.replace('\r','')
-        response = response.replace('?','')
-        response = response.replace('VERD','')
-        return (0, response)
+        with self.lock_:
+            self.socket.send(bytes('?%s\r\n' % queryString, 'utf-8'))
+            response = self.socket.recv(100)[:-2].decode('utf-8')
+            if DEBUG:
+                print('Raw response:', response)
+            if response == 'Error, invalid command':
+                return (1, response)
+            response = response.replace(queryString,'')
+            response = response.replace('\n','')
+            response = response.replace('\r','')
+            response = response.replace('?','')
+            response = response.replace('VERD','')
+            return (0, response)
         
 
 if __name__ == "__main__":

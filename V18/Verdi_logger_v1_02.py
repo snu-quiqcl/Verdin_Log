@@ -29,19 +29,19 @@ Verdi.DEBUG = False
 import time, datetime
 from threading import Thread, Event
 
-event = Event()
 
 class Verdi_Logger:
     def __init__(self, parent = None):
         self.parent = parent
         self.logger_thread = Thread(target=self.loging_func)
         self.logger_thread.start()
-        event.clear()
+        self.event = Event()
+        self.event.clear()
         
         
     def start_log(self):
         if self.logger_thread.is_alive():
-            event.set()
+            self.event.set()
         else:
             raise Exception('Dead thread')
         print('Start Log')
@@ -50,7 +50,7 @@ class Verdi_Logger:
         v18 = self.parent.verdi
         index_ = 0
         while True:
-            event.wait()
+            self.event.wait()
             index_ = 0
             if v18.isConnected():
                 log_header = 'Data and time, Laser status, Laser current power (W), Laser current, Laser set power (W)'
@@ -88,7 +88,7 @@ class Verdi_Logger:
                         
                     except KeyboardInterrupt:
                         break
-                    if not event.is_set():
+                    if not self.event.is_set():
                         print('Stop the log...')
                         logfile.close()
                         print('File saved...')
@@ -104,7 +104,7 @@ class Verdi_Logger:
     
     def end_log(self):
         if self.logger_thread.is_alive():
-            event.clear()
+            self.event.clear()
         else:
             raise Exception('Closing not opened thread')
 
