@@ -33,17 +33,17 @@ from threading import Thread, Event
 class Verdi_Logger:
     def __init__(self, parent = None):
         self.parent = parent
-        self.logger_thread = Thread(target=self.loging_func)
-        self.logger_thread.start()
         self.event = Event()
         self.event.clear()
+        self.logger_thread = Thread(target=self.loging_func)
+        self.logger_thread.start()
         
         
     def start_log(self):
         if self.logger_thread.is_alive():
-            self.event.set()
+            print('Already logging started')
         else:
-            raise Exception('Dead thread')
+            self.event.set()
         print('Start Log')
         
     def loging_func(self):
