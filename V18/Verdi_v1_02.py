@@ -23,7 +23,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv[1:],"hs:t:q",['help', 'Start', 'Stop'])
     except getopt.GetoptError:
-        printUsage(argv[0])
+        #printUsage(argv[0])
         sys.exit(2)
         
     v18 = Verdi()
@@ -55,6 +55,7 @@ class Verdi:
         self.TCPPort = defaultTCPPort
         self.socket = None
         self.lock_ = Lock()
+        self.deviceOpened = False  
         
     def isConnected(self):
         if self.socket != None:
@@ -73,6 +74,18 @@ class Verdi:
             stopbits=1, timeout=0.2)
         # If the timeout is less than 0.1second, there is communication error with some command
         """ 
+        connectionInfo = self.socket.recv(100).decode('latin-1').split(':')
+        if connectionInfo[0] == 'C': # Connected
+            self.deviceOpened = True
+            return None
+        elif connectionInfo[0] == 'A': # Other active connection information is returned
+            hostname = socket.gethostbyaddr(connectionInfo[1])[0]
+            message = ('TCPServer is occupied by an active connection with ' +\
+                       '(%s(%s), %s). Please disconnect the active ' +\
+                       'connection first.') \
+                       % (hostname, connectionInfo[1], connectionInfo[2])
+            self.deviceOpened = False
+            return message
 
 
     def disconnect(self):

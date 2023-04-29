@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>730</width>
-    <height>452</height>
+    <width>947</width>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -135,52 +135,6 @@ update</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="ch3Label">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(0, 85, 255);</string>
-          </property>
-          <property name="text">
-           <string>3</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::AutoText</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="ch3Y">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);</string>
-          </property>
-          <property name="text">
-           <string>ch3</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="ch4Label">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 0, 127);</string>
-          </property>
-          <property name="text">
-           <string>4</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::AutoText</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="ch4Y">
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);</string>
-          </property>
-          <property name="text">
-           <string>ch4</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLabel" name="timebase">
           <property name="enabled">
            <bool>false</bool>
@@ -240,26 +194,6 @@ update</string>
          </property>
          <property name="checked">
           <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_Ch3">
-         <property name="text">
-          <string>Ch3</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_Ch4">
-         <property name="text">
-          <string>Ch4</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -324,16 +258,6 @@ update</string>
          <item>
           <property name="text">
            <string>CHAN2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>CHAN3</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>CHAN4</string>
           </property>
          </item>
          <item>
