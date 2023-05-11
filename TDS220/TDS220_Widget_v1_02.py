@@ -78,23 +78,16 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.isSingleRun = False
         self.autoUpdate = False
         self.attachPlotToQWidget()
+        self.channelOn = [True, True]
+        self.yscale = [True, True]
 
 
     def updateParameterStatus(self):
         if self.oscilloscope.isConnected():
-            totalQuery = ':OPERegister:CONDition?;' + \
-                ':TRIGger:SWEep?;' + \
-                ':TRIGger:EDGE:SOURce?'
+            totalQuery = ':TRIGger:EDGE:SOURce?'
             status = self.oscilloscope.query(totalQuery)
-            (OPERegister, triggerSweep, triggerEdgeSource) = status.split(';')
+            (triggerEdgeSource) = status
             
-            if bin(int(OPERegister))[-4] == '0':
-                self.ui.runStopButton.setChecked(False)
-                self.ui.runStopStatus.setText('STOP')
-            else:
-                self.ui.runStopButton.setChecked(True)
-                self.ui.runStopStatus.setText('RUN')
-            self.ui.sweepModeComboBox.setCurrentText(triggerSweep)
             self.ui.triggerSourceComboBox.setCurrentText(triggerEdgeSource)
             
             self.deviceOpen = True
@@ -153,31 +146,6 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.ui.triggerSourceComboBox.setEnabled(True)
         self.ui.updateButton.setEnabled(True)
         
-
-    def checkTER(self):
-        self.timer.setInterval(1500)
-        triggerEventRegister = self.oscilloscope.query(':TER?')
-        #print('triggerEventRegister:', triggerEventRegister)
-        if triggerEventRegister == '+1':
-            self.singleClean('Triggered')
-        
-    def sweepModeChanged(self, sweepMode):
-        if sweepMode == 'AUTO':
-            self.oscilloscope.triggerAuto(True)
-            self.ui.updateButton.setEnabled(True)
-            self.ui.autoUpdateButton.setEnabled(True)
-        elif sweepMode == 'NORM':
-            if self.ui.runStopStatus.text() == 'RUN':
-                self.ui.updateButton.setEnabled(False)
-                if self.autoUpdate:
-                    self.autoUpdateTimer.stop()
-                    self.autoUpdate = False
-                    self.ui.autoUpdateButton.setChecked(False)
-                self.ui.autoUpdateButton.setEnabled(False)
-            self.oscilloscope.triggerAuto(False)
-        else:
-            print('Unknown sweep mode:', sweepMode)
-        
     def triggerForced(self):
         self.oscilloscope.write(':TRIGger:FORCe')
         
@@ -235,25 +203,16 @@ class TDS220_Widget(QtWidgets.QWidget):
             chan1FreqString = self.oscilloscope.chan1Freq
         else:
             chan1FreqString = makeFrequencyString(float(self.oscilloscope.chan1Freq))
-        if float(self.oscilloscope.chan3DelayWRTChan2) > 1e9:
-            chan3DelayWRTChan2String = self.oscilloscope.chan3DelayWRTChan2
-        else:
-            chan3DelayWRTChan2String = makeTimeString(self.oscilloscope.chan3DelayWRTChan2, 1)
-        if float(self.oscilloscope.chan4DelayWRTChan2) > 1e9:
-            chan4DelayWRTChan2String = self.oscilloscope.chan4DelayWRTChan2
-        else:
-            chan4DelayWRTChan2String = makeTimeString(self.oscilloscope.chan4DelayWRTChan2, 1)
-            
+        
         text = ('Ch1 Freq: %s\n' % chan1FreqString) + \
-            ('Ch1 VPP: %s\n' % makeVoltageString(float(self.oscilloscope.chan1VPP))) + \
-            ('Delay bet. Ch2 & Ch3: %s\n' % chan3DelayWRTChan2String)
+            ('Ch1 VPP: %s\n' % makeVoltageString(float(self.oscilloscope.chan1VPP)))
         self.ui.MeasurementLabel.setText(text)
     
     def drawPlot(self):
         xscale = self.oscilloscope.xscale
         self.ui.timebase.setText('    %s/' % makeTimeString(xscale, 0))
             
-        for n in range(4):
+        for n in range(2):
             chYscale = self.oscilloscope.yscale[n]
             chLine = self.lineList[n]
             if self.buttonList[n].isChecked():

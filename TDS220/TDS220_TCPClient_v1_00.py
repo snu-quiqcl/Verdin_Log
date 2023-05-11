@@ -13,8 +13,9 @@ from PyQt5 import QtCore
 
 import os
 import subprocess
-
 import io
+import time
+import socket
 
 
 class TDS220(QtCore.QObject):
@@ -75,9 +76,10 @@ class TDS220(QtCore.QObject):
         Returns:
             None
         """
-        self.socket.send(bytes('w:'+commandWithoutNewline, 'latin-1'))
+        self.socket.send(bytes(commandWithoutNewline, 'latin-1'))
 
         #self.inst.write(commandWithoutNewline)
+        
         
 
     def read(self):
@@ -157,190 +159,65 @@ class TDS220(QtCore.QObject):
         Returns:
             None
         """
-        totalQuery = ':MEASure:FREQuency? CHANnel1;' + \
-            ':MEASure:VPP? CHANnel1;' + \
-            ':MEASure:DELay? CHANnel2, CHANnel3;'
+        
+        self.write('MEASUrement:IMMed:SOUrce CH1')
+        self.write('MEASUrement:IMMed:TYPe FREQuency')
+        self.chan1Freq = self.read()
+        self.write('MEASUrement:IMMed:TYPe PK2pk')   
+        self.chan1VPP = self.read()/2
+        
+        self.channelOn[0], self.yscale[0]
+        
+        self.write('MEASUrement:IMMed:SOUrce CH2')
+        self.write('MEASUrement:IMMed:TYPe FREQuency')
+        self.chan2Freq = self.read()
+        self.write('MEASUrement:IMMed:TYPe PK2pk')   
+        self.chan2VPP = self.read()/2
+        
+        self.write('WFMPre:NR_PT?')
+        self.xscale = self.read()   
 
-        totalQuery += ':TIMebase:SCALe?;'
+            
         for n in range(2):
             ch = n+1
-            totalQuery += ':CHANnel%d:DISPlay?;' % ch
-            totalQuery += ':CHAN%d:SCAL?;' % ch
-
-
-        for n in range(2):
-            ch = n + 1
-            totalQuery += ':WAVeform:SOURce CHANnel%d;:WAVeform:DATA?;' % ch
-        reply = self.query(totalQuery)
-        #print(len(reply))
-        data = reply.split(';', 4+1+8)
-        #print(data[:4+1+8])
-
-        (self.chan1Freq, self.chan1VPP, self.chan3DelayWRTChan2,\
-         self.chan4DelayWRTChan2, self.xscale) = list(map(float, data[:4+1]))
-        
-        self.channelOn = []
-        self.yscale = []
-        for n in range(2):
-            self.channelOn.append(float(data[4 + 1 + 2*n]))
-            self.yscale.append(float(data[4 + 1 + 2*n + 1]))
-         
-
-        self.ydata = []
-
-
-        binaryBlocks = data[4+1+8]
-
-        stringStream = io.StringIO(binaryBlocks)
-        
-        for n in range(2):
-            self.ydata.append(self.read_binary_block(stringStream))
-            nextChar = stringStream.read(1)
-            if (len(nextChar) == 0):
-                if (n != 1):
-                    print('Not enough data from Waveform')
-                    break
-            elif nextChar != ';':
-                print('Wrong Binary Transfer Format: blocks are separted by ' + nextChar)
+            if self.channelOn[n] = True:
+                self.write('DATA:SOU CH%d' % ch)
+                self.write('DATA:WIDTH 1')
+                self.write('DATA:ENC RPB')
+                
+                self.write('WFMPRE:YMULT?')
+                ans = self.read()
+                ymult = float(ans)
+                
+                self.write('WFMPRE:YZERO?')
+                ans = self.read()
+                yzero = float(ans)
+                
+                self.write('WFMPRE:YOFF?')
+                ans = self.read()
+                yoff = float(ans)
+                
+                self.write('WFMPRE:XINCR?')
+                ans = self.read()
+                xincr = float(ans)
+                
+                
+                self.write('CURVE? CH%d' % ch)
+                data = self.read_raw(16)
+                headerlen = 2 + int(data[1])
+                header = data[:headerlen]
+                ADC_wave = data[headerlen:-1]
+                
+                ADC_wave = np.array(unpack('%sB' % len(ADC_wave),ADC_wave))
+                
+                Volts = (ADC_wave - yoff) * ymult  + yzero
+                
+                Time = np.arange(0, xincr * len(Volts), xincr)
 
 
 
-
-    def read_binary_block(self, stream):
-        """ Reads binary data block in Binary Transfer Format (IEEE 488.2 # format) from the device 
-            http://na.support.keysight.com/pna/help/latest/Programming/Learning_about_GPIB/Getting_Data_from_the_Analyzer.htm#block
-
-        Args:
-            None
-        
-        Returns:
-            byte string: received binary data only (header is removed)
-        """
-
-        # For large information such as PNG file, it takes a while before the
-        # output becomes ready, so timeout is set to have enough waiting time.
-        # In principle, this change of timeout should not affect the performance
-        # at all because it requests exact number of bytes based on header 
-        # information.
-        header = stream.read(2)
-        
-        if header[0] != '#':
-            raise Exception('Wrong Binary Transfer Format', \
-                            'Starts with %c instead of #.' % header[0])
-
-        header = stream.read(int(header[1]))
-        dataLength = int(header)
-        
-        #print(dataLength)
-
-        return list(map(ord, stream.read(dataLength)))
-
-
-        
-    def triggerAuto(self, mode = True):
-        """ Select Auto or Normal trigger.
-        
-        Args:
-            mode (bool): True==Auto, False==Normal
-        
-        Returns:
-            None
-        """
-        if (mode):
-            self.write(':TRIGger:SWEep AUTO')
-        else:
-            self.write(':TRIGger:SWEep NORMal')
-
-
-
-
-import time
-import socket
 
 if __name__ == "__main__":    
     osc = TDS220(None)
     osc.openDevice()
     print(osc.readID())
-
-    #osc.write(':MEASure:DEFine DELay,+0,+0') # Delay will be measured between two channels' first rising edges
-    #osc.write(':MEASure:DEFine THResholds,PERCent,+90.0,+50.0,+10.0') # Setting delay measurement threshold
-
-    #triggerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #triggerSocket.connect(('10.1.1.141', 23452))
-    #triggerSocket.settimeout(1) # unit in second
-
-    """
-    :TRIGger:FORCe
-    :TRIGger:EDGE:SOURce
-    
-    # The following precedure will clear the machine
-    osc.write(':SINGle') # When TDS220 goes to Single, trigger mode is automatically reset to Normal
-    time.sleep(0.5)
-    osc.triggerAuto(False) # Once trigger mode is changed, then all the data seems to be erased
-    osc.read()
-    
-    while True:
-        try:
-    osc.write(':SINGle')
-    time.sleep(0.5)
-    triggerSocket.send(b't')
-    
-
-    triggerEventRegister = osc.query(':TER?')
-    print(triggerEventRegister)
-    while triggerEventRegister == '+0':
-        triggerEventRegister = osc.query(':TER?')
-        print(triggerEventRegister)
-
-            tstart = time.time()                
-            totalQuery = ':MEASure:FREQuency? CHANnel1;' + \
-                         ':MEASure:VPP? CHANnel1;' + \
-                         ':MEASure:DELay? CHANnel2, CHANnel3;' + \
-                         ':MEASure:DELay? CHANnel2, CHANnel4'
-            #print(osc.query(totalQuery))
-            osc.query(totalQuery)
-            tstop = time.time()
-            
-            print(tstop - tstart)
-                
-            tstart = time.time(); osc.readAllActiveData(); print(time.time() - tstart)
-            time.sleep(0.5)
-
-        except KeyboardInterrupt: # This will catch only Ctrl-C, and by-pass all other exceptions
-            print("Keyboard interrupted")
-            break
-
-    
-    osc.closeDevice()
-    triggerSocket.close()
-    
-    #osc.resetUSB() 
-    
-    
-    """
-
-
-"""
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-
-ax.set_xticks(np.arange(0, 641, 64))
-ax.set_yticks(np.arange(0, 257, 25.6))
-
-ax.set_xticklabels([])
-ax.set_yticklabels([])
-
-ax.grid(which='both')
-
-plotColor = ['y', 'g', 'b', 'r']
-for n in range(4):
-    if ydata[n] is not None:
-        ax.plot(ydata[n], plotColor[n])
-        
-ax.set_ylim(0, 256)
-ax.set_xlim(0, 640)
-
-plt.show()
-
-inst.close()
-"""

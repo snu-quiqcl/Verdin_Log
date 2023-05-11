@@ -112,9 +112,9 @@ if __name__ == "__main__":
             TCPPort = int(arg)
  
     
-    # Open serial port
+    # Open serial port, Note that xonxoff is set to False at T257!!!!
     ser=serial.Serial(serialDevice, baudrate=9600, bytesize=8, parity='N',\
-        stopbits=1, xonxoff=True, timeout=0.5)
+        stopbits=1, xonxoff=False, timeout=0.5)
 
 
     # Create a lock for multiple threads

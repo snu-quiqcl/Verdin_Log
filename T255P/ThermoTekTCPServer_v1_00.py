@@ -114,7 +114,7 @@ if __name__ == "__main__":
     
     # Open serial port
     ser=serial.Serial(serialDevice, baudrate=9600, bytesize=8, parity='N',\
-        stopbits=1, xonxoff=True, timeout=0.5)
+        stopbits=1, xonxoff=False, timeout=0.5)
 
 
     # Create a lock for multiple threads

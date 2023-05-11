@@ -24,7 +24,7 @@ import visa
 instDefaultTimeout = 2*1000 # unit in miliseconds?
 
 #Changed to TDS220 device name
-defaultVISADevice = 'ASRL/dev/ttyUSB1::INSTR'
+defaultVISADevice = 'ASRL/dev/ttyUSB3::INSTR'
 #defaultSerialDevice = ''
 
 defaultTCPPort = 3034

@@ -30,7 +30,7 @@ class T255P:
     statusMessage = {'0': 'Auto Start', '1': 'Stand By', \
         '2': 'Chiller Run', '3': 'Safety Default'}
 
-    def __init__(self, defaultIPAddress = '10.1.1.141', defaultTCPPort = 18255):
+    def __init__(self, defaultIPAddress = '172.22.22.86', defaultTCPPort = 18255):
         self.IPAddress = defaultIPAddress
         self.TCPPort = defaultTCPPort
         self.socket = None

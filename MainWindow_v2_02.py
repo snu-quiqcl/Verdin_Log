@@ -28,8 +28,8 @@ import ThermoTek.ThermoTek_T255P_v1_00 as T255P
 
 from ConnectionDialogWidget_v1_00 import ConnectDialog
 #Oscilloscope
-from DSO_X_3034A.DSO_X_3034A_TCPClient_v1_00 import DSO_X_3034A
-from DSO_X_3034A.DSO_X_3034A_Widget_v1_02 import DSO_X_3034A_Widget
+from TDS220.TDS220_TCPClient_v1_00 import TDS220
+from TDS220.TDS220_Widget_v1_02 import TDS220_Widget
 from V18.Verdi_logger_v1_02 import Verdi_Logger
 
 #import BME280.Adafruit_BME280 as AF_BME280
@@ -79,11 +79,23 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
         ## Settings for DSO-X-3034A
         ###################################################################
         
-        self.oscilloscope = DSO_X_3034A(defaultIPAddress = '10.1.1.141', defaultTCPPort = 3034)
+        #self.oscilloscope = DSO_X_3034A(defaultIPAddress = '10.1.1.141', defaultTCPPort = 3034)
+        #self.oscilloscopeConnectionDialog = ConnectDialog(self, windowTitle = 'Connection to DSO3034A')
+        #self.oscilloscopeConnectionDialog.setDevice(self.oscilloscope, 'DSO_X_3034A_TCPServer_v2_00.py')
+        #self.oscilloscopeConnectionDialog.setMenuActionList([self.ui.actionOscilloscopeControl])
+        #self.oscilloscopeWidget = DSO_X_3034A_Widget(self, self.oscilloscope)
+        #self.oscilloscope.setWidget(self.oscilloscopeWidget)
+        #self.oscilloscopeWidget.hide()
+        
+        ###################################################################
+        ## Settings for TDS220
+        ###################################################################
+        
+        self.oscilloscope = TDS220(defaultIPAddress = '172.22.22.86', defaultTCPPort = 3034)
         self.oscilloscopeConnectionDialog = ConnectDialog(self, windowTitle = 'Connection to DSO3034A')
-        self.oscilloscopeConnectionDialog.setDevice(self.oscilloscope, 'DSO_X_3034A_TCPServer_v2_00.py')
+        self.oscilloscopeConnectionDialog.setDevice(self.oscilloscope, 'TDS220_TCPServer_v2_00.py')
         self.oscilloscopeConnectionDialog.setMenuActionList([self.ui.actionOscilloscopeControl])
-        self.oscilloscopeWidget = DSO_X_3034A_Widget(self, self.oscilloscope)
+        self.oscilloscopeWidget = TDS220_Widget(self, self.oscilloscope)
         self.oscilloscope.setWidget(self.oscilloscopeWidget)
         self.oscilloscopeWidget.hide()
         
@@ -149,7 +161,7 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
     ###################################################################
     ## Methods related to DSO-X-3034A
     ###################################################################
-    def openDSO_X_3034A_Connection(self):
+    def openTDS220_Connection(self):
         self.oscilloscopeConnectionDialog.updateParameterStatus()
         self.oscilloscopeConnectionDialog.show()
         #self.oscilloscopeConnectionDialog.exec_()
