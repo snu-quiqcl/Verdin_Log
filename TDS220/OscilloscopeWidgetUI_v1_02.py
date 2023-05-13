@@ -148,6 +148,7 @@ class Ui_OscilloscopeWidget(object):
         self.label_2.setObjectName("label_2")
         self.verticalLayout_5.addWidget(self.label_2)
         self.TriggerLevelText = QtWidgets.QDoubleSpinBox(OscilloscopeWidget)
+        self.TriggerLevelText.setMinimum(-99.99)
         self.TriggerLevelText.setObjectName("TriggerLevelText")
         self.verticalLayout_5.addWidget(self.TriggerLevelText)
         self.TriggerLevelScroll = QtWidgets.QSlider(OscilloscopeWidget)

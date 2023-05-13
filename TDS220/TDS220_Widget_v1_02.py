@@ -78,8 +78,6 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.isSingleRun = False
         self.autoUpdate = False
         self.attachPlotToQWidget()
-        self.channelOn = [True, True]
-        self.yscale = [True, True]
         self.trigger_value = 0
         self.trigger_mul = 1
         self.timer = QtCore.QTimer()
@@ -156,7 +154,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         
     def triggerLevelChanged_TextBox(self,trigger_value):
         self.trigger_value = trigger_value
-        self.ui.TriggerLevelScroll.setValue(max(min(500 + round(self.trigger_value * 1000 / self.trigger_mul), 500),-500))
+        self.ui.TriggerLevelScroll.setValue(max(min(500 + round(self.trigger_value * 1000 / self.trigger_mul), 1000),0))
         print(self.trigger_value)
         
     def ScrollTriggerMulInc(self):
@@ -165,7 +163,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         print(self.trigger_mul)
         
     def ScrollTriggerMulDec(self):
-        if self.trigger_mul < 2:
+        if self.trigger_mul > 1:
             self.trigger_mul = self.trigger_mul - 1
             self.ui.TriggerLevelMul.display(self.trigger_mul)
         else:
@@ -175,15 +173,15 @@ class TDS220_Widget(QtWidgets.QWidget):
             
     def set_Ch1(self):
         if self.ui.pushButton_Ch1.isChecked():
-            self.channelOn[0] = True
+            self.oscilloscop.channelOn[0] = True
         else:
-            self.channelOn[0] = False
+            self.oscilloscop.channelOn[0] = False
             
     def set_Ch2(self):
         if self.ui.pushButton_Ch2.isChecked():
-            self.channelOn[1] = True
+            self.oscilloscop.channelOn[1] = True
         else:
-            self.channelOn[1] = False
+            self.oscilloscop.channelOn[1] = False
 
     def attachPlotToQWidget(self):
         self.fig = Figure(figsize=(4,3), dpi=100)

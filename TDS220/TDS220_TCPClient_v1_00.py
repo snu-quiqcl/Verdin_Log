@@ -33,6 +33,8 @@ class TDS220(QtCore.QObject):
         self.chan2VPP = 0
         self.chan1Freq = 0
         self.chan2Freq = 0
+        self.channelOn = [True, True]
+        self.yscale = [True, True]
 
     def setWidget(self, widget):
         self.widget = widget        
@@ -83,7 +85,7 @@ class TDS220(QtCore.QObject):
         Returns:
             None
         """
-        self.socket.send(bytes(commandWithoutNewline, 'latin-1'))
+        self.socket.send(bytes('w:' + commandWithoutNewline, 'latin-1'))
 
         #self.inst.write(commandWithoutNewline)
         
@@ -125,7 +127,7 @@ class TDS220(QtCore.QObject):
         Returns:
             unicode string: reply string
         """
-        self.socket.send(bytes(messageWithoutNewline, 'latin-1'))
+        self.socket.send(bytes('q:' + messageWithoutNewline, 'latin-1'))
         return (self.socket.recv(10000).decode('latin-1'))[:-1] # Stripping '\n'
 
         #reply = self.inst.query(messageWithoutNewline, delay)

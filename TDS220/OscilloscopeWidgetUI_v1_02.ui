@@ -318,7 +318,11 @@ update</string>
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="TriggerLevelText"/>
+      <widget class="QDoubleSpinBox" name="TriggerLevelText">
+       <property name="minimum">
+        <double>-99.989999999999995</double>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QSlider" name="TriggerLevelScroll">

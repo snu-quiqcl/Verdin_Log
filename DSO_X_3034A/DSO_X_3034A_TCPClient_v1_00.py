@@ -75,7 +75,7 @@ class DSO_X_3034A(QtCore.QObject):
         Returns:
             None
         """
-        self.socket.send(bytes('w:'+commandWithoutNewline, 'latin-1'))
+        self.socket.send(bytes("w:" + commandWithoutNewline, 'latin-1'))
 
         #self.inst.write(commandWithoutNewline)
         
@@ -116,7 +116,7 @@ class DSO_X_3034A(QtCore.QObject):
         Returns:
             unicode string: reply string
         """
-        self.socket.send(bytes('q:' + messageWithoutNewline, 'latin-1'))
+        self.socket.send(bytes("q:" + messageWithoutNewline, 'latin-1'))
         return (self.socket.recv(10000).decode('latin-1'))[:-1] # Stripping '\n'
 
         #reply = self.inst.query(messageWithoutNewline, delay)
