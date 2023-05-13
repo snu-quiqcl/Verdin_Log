@@ -203,7 +203,7 @@ class TDS220(QtCore.QObject):
             
         for n in range(2):
             ch = n+1
-            if self.channelOn[n] = True:
+            if self.channelOn[n] == True:
                 self.write('DATA:SOU CH%d' % ch)
                 self.write('DATA:WIDTH 1')
                 self.write('DATA:ENC RPB')
