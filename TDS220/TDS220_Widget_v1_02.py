@@ -120,7 +120,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         
     def single(self):
         self.isSingleRun = True
-        self.oscilloscope.write(':SINGle')
+        self.oscilloscope.write(':ACQUire:STOPAFTER RUNSTop')
         if self.ui.runStopButton.isChecked():
             self.ui.runStopStatus.setText('STOP')
             self.ui.runStopButton.setChecked(False)

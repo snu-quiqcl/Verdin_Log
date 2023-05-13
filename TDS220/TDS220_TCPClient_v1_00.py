@@ -104,7 +104,7 @@ class TDS220(QtCore.QObject):
         #return (self.inst.read())[:-1] # Stripping '\n'
     
 
-    def read_raw(self, size=None):
+    def write_read_raw(self, messageWithoutNewline, size=None):
         """ Reads data from the device .
             
         Args:
@@ -113,7 +113,7 @@ class TDS220(QtCore.QObject):
         Returns:
             byte string: received string
         """
-
+        self.socket.send(bytes('rr:' + messageWithoutNewline, 'latin-1'))
         return (self.socket.recv(10000).decode('latin-1'))[:-1]
         #return self.inst.read_raw(size)        
 
@@ -232,7 +232,7 @@ class TDS220(QtCore.QObject):
                 
                 
                 TotalQuery = ':CURVE?;'
-                data = self.query(TotalQuery)
+                data = self.write_read_raw(TotalQuery)
                 print(data)
                 headerlen = 2 + int(data[1])
                 header = data[:headerlen]
