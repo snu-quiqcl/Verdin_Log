@@ -95,6 +95,11 @@ inst.write('MEASUrement:IMMed:TYPe FREQuency')
 inst.write('MEASUrement:IMMed:SOUrce CH1')  
 inst.write('MEASUrement:IMMed:VALUE?')
 chan1Freq = float(inst.read())
+print(chan1Freq)
+
+inst.close()
+
+"""
 inst.write('MEASUrement:IMMed:TYPe PK2pk') 
 inst.write('MEASUrement:IMMed:SOUrce CH1')  
 inst.write('MEASUrement:IMMed:VALUE?')
@@ -176,3 +181,4 @@ chLine.set_visible(True)
 canvas1.draw()
         
 inst.close()
+"""

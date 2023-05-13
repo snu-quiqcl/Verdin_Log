@@ -51,7 +51,7 @@ class TDS220(QtCore.QObject):
         """
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.IPAddress, self.TCPPort))
-        self.socket.settimeout(5)
+        self.socket.settimeout(20)
         connectionInfo = self.socket.recv(100).decode('latin-1').split(':')
         if connectionInfo[0] == 'C': # Connected
             self.deviceOpened = True
@@ -169,37 +169,43 @@ class TDS220(QtCore.QObject):
             None
         """
         if self.channelOn[0] == True:
-            self.write('SELECT:CH1 ON')
-            self.write('ACQUire:MODe SAMPLE')
-            self.write('ACQUire:STOPAFTER SEQUENCE')
-            self.write('ACQUire:STATE ON')
-            self.write('MEASUrement:IMMed:TYPe FREQuency')
-            self.write('MEASUrement:IMMed:SOUrce CH1')  
-            self.write('MEASUrement:IMMed:VALUE?')
-            self.chan1Freq = float(self.read())
-            self.write('MEASUrement:IMMed:TYPe PK2pk') 
-            self.write('MEASUrement:IMMed:SOUrce CH1')  
-            self.write('MEASUrement:IMMed:VALUE?')
-            self.chan1VPP = float(self.read())/2
+            TotalQuery = ':SELECT:CH1 ON;' + \
+                ':ACQUire:MODe SAMPLE;' + \
+                ':ACQUire:STOPAFTER SEQUENCE;' + \
+                ':ACQUire:STATE ON;' + \
+                ':MEASUrement:IMMed:TYPe FREQuency;' + \
+                ':MEASUrement:IMMed:SOUrce CH1;' + \
+                ':MEASUrement:IMMed:VALUE?;'
+            self.chan1Freq = float(self.query(TotalQuery))
+            
+            TotalQuery = ':MEASUrement:IMMed:TYPe PK2pk;' + \
+                ':MEASUrement:IMMed:SOUrce CH1;' + \
+                ':MEASUrement:IMMed:VALUE?;'
+            self.chan1VPP = float(self.query(TotalQuery))/2)
         
         if self.channelOn[1] == True:
-            self.write('SELECT:CH2 ON')
-            self.write('ACQUire:MODe SAMPLE')
-            self.write('ACQUire:STOPAFTER SEQUENCE')
-            self.write('ACQUire:STATE ON')
-            self.write('MEASUrement:IMMed:TYPe FREQuency')
-            self.write('MEASUrement:IMMed:SOUrce CH2')  
-            self.write('MEASUrement:IMMed:VALUE?')
-            self.chan2Freq = float(self.read())
-            self.write('MEASUrement:IMMed:TYPe PK2pk') 
-            self.write('MEASUrement:IMMed:SOUrce CH2')  
-            self.write('MEASUrement:IMMed:VALUE?')
-            self.chan2VPP = float(self.read())/2
-        else:
-            self.channelOn[1] = False
+            TotalQuery = ':SELECT:CH2 ON;' + \
+                ':ACQUire:MODe SAMPLE;' + \
+                ':ACQUire:STOPAFTER SEQUENCE;' + \
+                ':ACQUire:STATE ON;' + \
+                ':MEASUrement:IMMed:TYPe FREQuency;' + \
+                ':MEASUrement:IMMed:SOUrce CH2;' + \
+                ':MEASUrement:IMMed:VALUE?;'
+            self.chan2Freq = float(self.query(TotalQuery))
+            
+            TotalQuery = ':MEASUrement:IMMed:TYPe PK2pk;' + \
+                ':MEASUrement:IMMed:SOUrce CH2;' + \
+                ':MEASUrement:IMMed:VALUE?;'
+            self.chan2VPP = float(self.query(TotalQuery))/2
         
-        self.write('WFMPre:NR_PT?')
-        self.xscale = self.read()   
+        TotalQuery = ':WFMPre:NR_PT?;'
+        self.xscale = int(self.query(TotalQuery))
+        
+        print(self.chan1Freq)
+        print(self.chan1VPP)
+        print(self.chan2Freq)
+        print(self.chan2VPP)
+        print(self.xscale)
             
         for n in range(2):
             ch = n+1
@@ -208,26 +214,27 @@ class TDS220(QtCore.QObject):
                 self.write('DATA:WIDTH 1')
                 self.write('DATA:ENC RPB')
                 
-                self.write('WFMPRE:YMULT?')
-                ans = self.read()
-                ymult = float(ans)
+                TotalQuery = ':WFMPRE:YMULT?;'
+                ymult = float(self.query(TotalQuery))
+                print(ymult)
                 
-                self.write('WFMPRE:YZERO?')
-                ans = self.read()
-                yzero = float(ans)
+                TotalQuery = ':WFMPRE:YZERO?;'
+                yzero = float(self.query(TotalQuery))
+                print(yzero)
                 
-                self.write('WFMPRE:YOFF?')
-                ans = self.read()
-                yoff = float(ans)
+                TotalQuery = ':WFMPRE:YOFF?;'
+                yoff = float(self.query(TotalQuery))
+                print(yoff)
                 
-                self.write('WFMPRE:XINCR?')
-                ans = self.read()
-                xincr = float(ans)
+                TotalQuery = ':WFMPRE:XINCR?;'
+                xincr = float(self.query(TotalQuery))
+                print(xincr)
                 
                 
                 self.write('ACQuire:MODe:SAMPLE')
-                self.write('CURVE?')
-                data = self.read_raw(16)
+                TotalQuery = ':CURVE?;'
+                data = self.query(TotalQuery)
+                print(data)
                 headerlen = 2 + int(data[1])
                 header = data[:headerlen]
                 ADC_wave = data[headerlen:-1]
@@ -242,6 +249,7 @@ class TDS220(QtCore.QObject):
                 Volts = Volts.tolist()
                 Time = Time.tolist()
                 self.ydata.append(Volts)
+                print(self.ydata)
 
 
 

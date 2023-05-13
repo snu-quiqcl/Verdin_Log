@@ -173,15 +173,15 @@ class TDS220_Widget(QtWidgets.QWidget):
             
     def set_Ch1(self):
         if self.ui.pushButton_Ch1.isChecked():
-            self.oscilloscop.channelOn[0] = True
+            self.oscilloscope.channelOn[0] = True
         else:
-            self.oscilloscop.channelOn[0] = False
+            self.oscilloscope.channelOn[0] = False
             
     def set_Ch2(self):
         if self.ui.pushButton_Ch2.isChecked():
-            self.oscilloscop.channelOn[1] = True
+            self.oscilloscope.channelOn[1] = True
         else:
-            self.oscilloscop.channelOn[1] = False
+            self.oscilloscope.channelOn[1] = False
 
     def attachPlotToQWidget(self):
         self.fig = Figure(figsize=(4,3), dpi=100)
