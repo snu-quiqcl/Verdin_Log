@@ -220,7 +220,6 @@ class TDS220(QtCore.QObject):
                     ':WFMPRE:XINCR?;' + \
                     ':ACQuire:MODe:SAMPLE;'
                 
-                TotalQuery = 
                 [ymult, yzero, yoff, xincr] = self.query(TotalQuery).split(';')
                 ymult = float(ymult)
                 yzero = float(yzero)
@@ -232,7 +231,6 @@ class TDS220(QtCore.QObject):
                 print(xincr)
                 
                 
-                self.write()
                 TotalQuery = ':CURVE?;'
                 data = self.query(TotalQuery)
                 print(data)
