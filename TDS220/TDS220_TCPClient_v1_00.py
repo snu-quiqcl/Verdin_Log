@@ -181,7 +181,7 @@ class TDS220(QtCore.QObject):
             TotalQuery = ':MEASUrement:IMMed:TYPe PK2pk;' + \
                 ':MEASUrement:IMMed:SOUrce CH1;' + \
                 ':MEASUrement:IMMed:VALUE?;'
-            self.chan1VPP = float(self.query(TotalQuery))/2)
+            self.chan1VPP = float(self.query(TotalQuery))/2
         
         if self.channelOn[1] == True:
             TotalQuery = ':SELECT:CH2 ON;' + \
@@ -210,28 +210,29 @@ class TDS220(QtCore.QObject):
         for n in range(2):
             ch = n+1
             if self.channelOn[n] == True:
-                self.write('DATA:SOU CH%d' % ch)
-                self.write('DATA:WIDTH 1')
-                self.write('DATA:ENC RPB')
+                temp_str = ':DATA:SOU CH%d;' % ch
+                TotalQuery = temp_str + \
+                    ':DATA:WIDTH 1;' + \
+                    ':DATA:ENC RPB;' + \
+                    ':WFMPRE:YMULT?;' + \
+                    ':WFMPRE:YZERO?;' + \
+                    ':WFMPRE:YOFF?;' + \
+                    ':WFMPRE:XINCR?;' + \
+                    ':ACQuire:MODe:SAMPLE;'
                 
-                TotalQuery = ':WFMPRE:YMULT?;'
-                ymult = float(self.query(TotalQuery))
+                TotalQuery = 
+                [ymult, yzero, yoff, xincr] = self.query(TotalQuery).split(';')
+                ymult = float(ymult)
+                yzero = float(yzero)
+                yoff = float(yoff)
+                xincr = float(xincr)
                 print(ymult)
-                
-                TotalQuery = ':WFMPRE:YZERO?;'
-                yzero = float(self.query(TotalQuery))
-                print(yzero)
-                
-                TotalQuery = ':WFMPRE:YOFF?;'
-                yoff = float(self.query(TotalQuery))
-                print(yoff)
-                
-                TotalQuery = ':WFMPRE:XINCR?;'
-                xincr = float(self.query(TotalQuery))
+                print(yzero) 
+                print(yoff) 
                 print(xincr)
                 
                 
-                self.write('ACQuire:MODe:SAMPLE')
+                self.write()
                 TotalQuery = ':CURVE?;'
                 data = self.query(TotalQuery)
                 print(data)
