@@ -26,6 +26,11 @@ class TDS220(QtCore.QObject):
         self.deviceOpened = False        
         self.IPAddress = defaultIPAddress
         self.TCPPort = defaultTCPPort
+        self.ydata = []
+        self.chan1VPP = 0
+        self.chan2VPP = 0
+        self.chan1Freq = 0
+        self.chan2Freq = 0
 
     def setWidget(self, widget):
         self.widget = widget        
@@ -118,7 +123,7 @@ class TDS220(QtCore.QObject):
         Returns:
             unicode string: reply string
         """
-        self.socket.send(bytes('q:' + messageWithoutNewline, 'latin-1'))
+        self.socket.send(bytes(messageWithoutNewline, 'latin-1'))
         return (self.socket.recv(10000).decode('latin-1'))[:-1] # Stripping '\n'
 
         #reply = self.inst.query(messageWithoutNewline, delay)
@@ -159,24 +164,42 @@ class TDS220(QtCore.QObject):
         Returns:
             None
         """
+        if self.ui.pushButton_Ch1.isChecked():
+            self.channelOn[0] = True
+            self.write('SELECT:CH1 ON')
+            self.write('ACQUire:MODe SAMPLE')
+            self.write('ACQUire:STOPAFTER SEQUENCE')
+            self.write('ACQUire:STATE ON')
+            self.write('MEASUrement:IMMed:TYPe FREQuency')
+            self.write('MEASUrement:IMMed:SOUrce CH1')  
+            self.write('MEASUrement:IMMed:VALUE?')
+            self.chan1Freq = float(self.read())
+            self.write('MEASUrement:IMMed:TYPe PK2pk') 
+            self.write('MEASUrement:IMMed:SOUrce CH1')  
+            self.write('MEASUrement:IMMed:VALUE?')
+            self.chan1VPP = float(self.read())/2
+        else:
+            self.channelOn[0] = False
         
-        self.write('MEASUrement:IMMed:SOUrce CH1')
-        self.write('MEASUrement:IMMed:TYPe FREQuency')
-        self.chan1Freq = self.read()
-        self.write('MEASUrement:IMMed:TYPe PK2pk')   
-        self.chan1VPP = self.read()/2
-        
-        self.channelOn[0], self.yscale[0]
-        
-        self.write('MEASUrement:IMMed:SOUrce CH2')
-        self.write('MEASUrement:IMMed:TYPe FREQuency')
-        self.chan2Freq = self.read()
-        self.write('MEASUrement:IMMed:TYPe PK2pk')   
-        self.chan2VPP = self.read()/2
+        if self.ui.pushButton_Ch2.isChecked():
+            self.channelOn[1] = True
+            self.write('SELECT:CH2 ON')
+            self.write('ACQUire:MODe SAMPLE')
+            self.write('ACQUire:STOPAFTER SEQUENCE')
+            self.write('ACQUire:STATE ON')
+            self.write('MEASUrement:IMMed:TYPe FREQuency')
+            self.write('MEASUrement:IMMed:SOUrce CH2')  
+            self.write('MEASUrement:IMMed:VALUE?')
+            self.chan2Freq = float(self.read())
+            self.write('MEASUrement:IMMed:TYPe PK2pk') 
+            self.write('MEASUrement:IMMed:SOUrce CH2')  
+            self.write('MEASUrement:IMMed:VALUE?')
+            self.chan2VPP = float(self.read())/2
+        else:
+            self.channelOn[1] = False
         
         self.write('WFMPre:NR_PT?')
         self.xscale = self.read()   
-
             
         for n in range(2):
             ch = n+1
@@ -202,17 +225,23 @@ class TDS220(QtCore.QObject):
                 xincr = float(ans)
                 
                 
-                self.write('CURVE? CH%d' % ch)
+                self.write('ACQuire:MODe:SAMPLE')
+                self.write('CURVE?')
                 data = self.read_raw(16)
                 headerlen = 2 + int(data[1])
                 header = data[:headerlen]
                 ADC_wave = data[headerlen:-1]
                 
                 ADC_wave = np.array(unpack('%sB' % len(ADC_wave),ADC_wave))
+                ADC_wave = ADC_wave[0:len(ADC_wave)-2]
                 
                 Volts = (ADC_wave - yoff) * ymult  + yzero
                 
                 Time = np.arange(0, xincr * len(Volts), xincr)
+                
+                Volts = Volts.tolist()
+                Time = Time.tolist()
+                self.ydata.append(Volts)
 
 
 

@@ -76,18 +76,6 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
         self.chillerControlDialog = ChillerControlDialog(self)
         
         ###################################################################
-        ## Settings for DSO-X-3034A
-        ###################################################################
-        
-        #self.oscilloscope = DSO_X_3034A(defaultIPAddress = '10.1.1.141', defaultTCPPort = 3034)
-        #self.oscilloscopeConnectionDialog = ConnectDialog(self, windowTitle = 'Connection to DSO3034A')
-        #self.oscilloscopeConnectionDialog.setDevice(self.oscilloscope, 'DSO_X_3034A_TCPServer_v2_00.py')
-        #self.oscilloscopeConnectionDialog.setMenuActionList([self.ui.actionOscilloscopeControl])
-        #self.oscilloscopeWidget = DSO_X_3034A_Widget(self, self.oscilloscope)
-        #self.oscilloscope.setWidget(self.oscilloscopeWidget)
-        #self.oscilloscopeWidget.hide()
-        
-        ###################################################################
         ## Settings for TDS220
         ###################################################################
         

@@ -21,8 +21,10 @@ import socket
 import struct
 
 
+#defaultSerialDevice = '/dev/serial/by-id/' + \
+#    'usb-FTDI_Dual_RS232-HS-if00-port0'
 defaultSerialDevice = '/dev/serial/by-id/' + \
-    'usb-FTDI_Dual_RS232-HS-if00-port0'
+    'usb-Prolific_Technology_Inc._USB-Serial_Controller_CSAHb111216-if00-port0'
 defaultTCPPort = 18181
 
 def printUsage(programName):

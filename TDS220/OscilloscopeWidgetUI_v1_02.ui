@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>947</width>
-    <height>512</height>
+    <width>1196</width>
+    <height>683</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,48 +15,35 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="2" column="1">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="2">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Interval (s)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3" rowspan="2">
-      <widget class="QPushButton" name="autoUpdateButton">
-       <property name="text">
-        <string>Auto
-update</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QDoubleSpinBox" name="updateIntervalSpinBox">
-       <property name="minimum">
-        <double>1.500000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>100.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.500000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1" rowspan="2">
-      <widget class="QPushButton" name="updateButton">
-       <property name="text">
-        <string>Update</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>300</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Measurements</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="MeasurementLabel">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="Measurement_Immed">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
-   <item row="0" column="0" rowspan="3">
+   <item row="0" column="0" rowspan="4">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QFrame" name="frame">
@@ -201,35 +188,6 @@ update</string>
      </item>
     </layout>
    </item>
-   <item row="1" column="1">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>300</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Measurements</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QLabel" name="MeasurementLabel">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="1">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="3">
@@ -252,17 +210,12 @@ update</string>
         <widget class="QComboBox" name="triggerSourceComboBox">
          <item>
           <property name="text">
-           <string>CHAN1</string>
+           <string>CH1</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>CHAN2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>EXT</string>
+           <string>CH2</string>
           </property>
          </item>
         </widget>
@@ -283,11 +236,44 @@ STOP</string>
        </property>
       </widget>
      </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="triggerForceButton">
+       <property name="text">
+        <string>Trigger
+Force</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QLabel" name="runStopStatus">
        <property name="text">
         <string>STOP</string>
        </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Sweep mode</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="sweepModeComboBox">
+       <item>
+        <property name="text">
+         <string>AUTO</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>NORM</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item row="0" column="2">
@@ -300,14 +286,142 @@ STOP</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <layout class="QVBoxLayout" name="verticalLayout_2"/>
-     </item>
+    </layout>
+   </item>
+   <item row="3" column="1">
+    <layout class="QGridLayout" name="gridLayout_2">
      <item row="1" column="2">
-      <widget class="QPushButton" name="triggerForceButton">
+      <widget class="QDoubleSpinBox" name="updateIntervalSpinBox">
+       <property name="minimum">
+        <double>1.500000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.500000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" rowspan="2">
+      <widget class="QPushButton" name="updateButton">
        <property name="text">
-        <string>Trigger
-Force</string>
+        <string>Update</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Interval (s)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3" rowspan="2">
+      <widget class="QPushButton" name="autoUpdateButton">
+       <property name="text">
+        <string>Auto
+update</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="2" rowspan="4">
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>TriggerLevel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="TriggerLevelText"/>
+     </item>
+     <item>
+      <widget class="QSlider" name="TriggerLevelScroll">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+       <property name="singleStep">
+        <number>1</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>ScrollTriggerMultiply</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QLCDNumber" name="TriggerLevelMul">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="value" stdset="0">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="Decrease">
+           <property name="text">
+            <string>Decrease</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::RightToLeft</enum>
+           </property>
+           <property name="text">
+            <string>Increase</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="SetTriggerLevel">
+       <property name="text">
+        <string>SetTrigger</string>
        </property>
       </widget>
      </item>
@@ -324,8 +438,8 @@ Force</string>
    <slot>updatePlot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>639</x>
-     <y>488</y>
+     <x>562</x>
+     <y>604</y>
     </hint>
     <hint type="destinationlabel">
      <x>394</x>
@@ -340,8 +454,24 @@ Force</string>
    <slot>runStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>613</x>
+     <x>536</x>
      <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sweepModeComboBox</sender>
+   <signal>activated(QString)</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>sweepModeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>631</x>
+     <y>110</y>
     </hint>
     <hint type="destinationlabel">
      <x>394</x>
@@ -356,7 +486,7 @@ Force</string>
    <slot>triggerForced()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>829</x>
+     <x>752</x>
      <y>123</y>
     </hint>
     <hint type="destinationlabel">
@@ -372,7 +502,7 @@ Force</string>
    <slot>triggerSourceChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>931</x>
+     <x>854</x>
      <y>124</y>
     </hint>
     <hint type="destinationlabel">
@@ -388,7 +518,7 @@ Force</string>
    <slot>single()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>829</x>
+     <x>752</x>
      <y>55</y>
     </hint>
     <hint type="destinationlabel">
@@ -404,12 +534,92 @@ Force</string>
    <slot>autoUpdate(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>932</x>
-     <y>496</y>
+     <x>855</x>
+     <y>612</y>
     </hint>
     <hint type="destinationlabel">
      <x>366</x>
      <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SetTriggerLevel</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>set_triggerLevel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>922</x>
+     <y>651</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>965</x>
+     <y>464</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TriggerLevelText</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>triggerLevelChanged_TextBox(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1084</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1192</x>
+     <y>332</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TriggerLevelScroll</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>triggerLevelChanged_Scroll(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>883</x>
+     <y>344</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1195</x>
+     <y>412</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>ScrollTriggerMulInc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1151</x>
+     <y>618</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1183</x>
+     <y>457</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Decrease</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>ScrollTriggerMulDec()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>963</x>
+     <y>605</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1184</x>
+     <y>498</y>
     </hint>
    </hints>
   </connection>
@@ -423,5 +633,10 @@ Force</string>
   <slot>triggerForced()</slot>
   <slot>triggerSourceChanged(QString)</slot>
   <slot>autoUpdate(bool)</slot>
+  <slot>set_triggerLevel()</slot>
+  <slot>triggerLevelChanged_Scroll(int)</slot>
+  <slot>triggerLevelChanged_TextBox(double)</slot>
+  <slot>ScrollTriggerMulInc()</slot>
+  <slot>ScrollTriggerMulDec()</slot>
  </slots>
 </ui>

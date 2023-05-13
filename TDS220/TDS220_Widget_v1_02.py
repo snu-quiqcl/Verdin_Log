@@ -80,11 +80,13 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.attachPlotToQWidget()
         self.channelOn = [True, True]
         self.yscale = [True, True]
+        self.trigger_value = 0
+        self.trigger_mul = 1
 
 
     def updateParameterStatus(self):
         if self.oscilloscope.isConnected():
-            totalQuery = ':TRIGger:EDGE:SOURce?'
+            totalQuery = ':TRIGger:MAIn:EDGE:SOURce?'
             status = self.oscilloscope.query(totalQuery)
             (triggerEdgeSource) = status
             
@@ -106,21 +108,19 @@ class TDS220_Widget(QtWidgets.QWidget):
                     self.autoUpdate = False
                     self.ui.autoUpdateButton.setChecked(False)
                 self.ui.autoUpdateButton.setEnabled(False)
-            self.oscilloscope.write(':RUN')
+            self.oscilloscope.write('ACQuire:STATE RUN')
             self.ui.runStopStatus.setText('RUN')
 
         else:
-            self.oscilloscope.write(':STOP')
+            self.oscilloscope.write('ACQuire:STATE STOP')
             self.ui.runStopStatus.setText('STOP')
             self.ui.updateButton.setEnabled(True)
             self.ui.autoUpdateButton.setEnabled(True)
         
     def single(self):
         self.isSingleRun = True
-        self.oscilloscope.query(':TER?') # Clear TER
         self.oscilloscope.write(':SINGle')
         if self.ui.runStopButton.isChecked():
-            self.oscilloscope.query(':TER?') # Clear TER
             self.ui.runStopStatus.setText('STOP')
             self.ui.runStopButton.setChecked(False)
         self.prevSweepMode = self.ui.sweepModeComboBox.currentText()
@@ -150,8 +150,30 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.oscilloscope.write(':TRIGger:FORCe')
         
     def triggerSourceChanged(self, source):
-        self.oscilloscope.write(':TRIGger:EDGE:SOURce ' + source)
-
+        self.oscilloscope.write(':TRIGger:MAIn:EDGE:SOURce ' + source)
+        
+    def set_triggerLevel(self):
+        trigger_str = str(self.trigger_value)
+        self.oscilloscope.write('TRIGger:MAIn:LEVel ' + trigger_str)
+        
+    def triggerLevelChanged_Scroll(self,trigger_value):
+        self.trigger_value = (trigger_value - 500 ) * self.trigger_mul / 1000
+        self.ui.TriggerLevelText.setValue(self.trigger_value)
+        
+    def triggerLevelChanged_TextBox(self,trigger_value):
+        self.trigger_value = trigger_value
+        self.ui.TriggerLevelScroll.setValue(max(min(500 + round(self.trigger_value * 1000 / self.trigger_mul), 500),-500))
+        
+    def ScrollTriggerMulInc(self):
+        self.trigger_mul = self.trigger_mul + 1
+        self.ui.TriggerLevelMul.setValue(self.trigger_mul)
+        
+    def ScrollTriggerMulDec(self):
+        if self.trigger_mul < 2:
+            self.trigger_mul = self.trigger_mul - 1
+            self.ui.TriggerLevelMul.setValue(self.trigger_mul)
+        else:
+            print('trigger_mul should be bigger or equal to 1')
 
     def attachPlotToQWidget(self):
         self.fig = Figure(figsize=(4,3), dpi=100)
@@ -203,9 +225,16 @@ class TDS220_Widget(QtWidgets.QWidget):
             chan1FreqString = self.oscilloscope.chan1Freq
         else:
             chan1FreqString = makeFrequencyString(float(self.oscilloscope.chan1Freq))
+            
+        if float(self.oscilloscope.chan2Freq) > 1e9:
+            chan2FreqString = self.oscilloscope.chan2Freq
+        else:
+            chan2FreqString = makeFrequencyString(float(self.oscilloscope.chan2Freq))
         
         text = ('Ch1 Freq: %s\n' % chan1FreqString) + \
-            ('Ch1 VPP: %s\n' % makeVoltageString(float(self.oscilloscope.chan1VPP)))
+            ('Ch1 VPP: %s\n' % makeVoltageString(float(self.oscilloscope.chan1VPP))) + \
+            ('Ch2 Freq: %s\n' % chan2FreqString) + \
+            ('Ch2 VPP: %s\n' % makeVoltageString(float(self.oscilloscope.chan2VPP)))
         self.ui.MeasurementLabel.setText(text)
     
     def drawPlot(self):

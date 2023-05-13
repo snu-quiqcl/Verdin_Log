@@ -46,10 +46,10 @@ if __name__ == "__main__":
     yoff = float(ans)
     
     scope.write('WFMPRE:XINCR?')
-    ans = scope.read()
+    ans = scope.read() 
     xincr = float(ans)
     
-    
+    scope.write('ACQuire:MODe:SAMPLE')
     scope.write('CURVE?')
     data = scope.read_raw(16)
     #data = read_all(scope)
