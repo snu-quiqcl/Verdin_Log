@@ -82,6 +82,10 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.yscale = [True, True]
         self.trigger_value = 0
         self.trigger_mul = 1
+        self.timer = QtCore.QTimer()
+        #self.timer.timeout.connect(self.checkTER)
+        self.timer.setInterval(500)
+        self.timer.start()
 
 
     def updateParameterStatus(self):
@@ -101,13 +105,12 @@ class TDS220_Widget(QtWidgets.QWidget):
         if self.isSingleRun:
             self.singleClean('Aborted')
         if checked == True:
-            if self.ui.sweepModeComboBox.currentText() == 'NORM':
-                self.ui.updateButton.setEnabled(False)
-                if self.autoUpdate:
-                    self.autoUpdateTimer.stop()
-                    self.autoUpdate = False
-                    self.ui.autoUpdateButton.setChecked(False)
-                self.ui.autoUpdateButton.setEnabled(False)
+            self.ui.updateButton.setEnabled(False)
+            if self.autoUpdate:
+                self.autoUpdateTimer.stop()
+                self.autoUpdate = False
+                self.ui.autoUpdateButton.setChecked(False)
+            self.ui.autoUpdateButton.setEnabled(False)
             self.oscilloscope.write('ACQuire:STATE RUN')
             self.ui.runStopStatus.setText('RUN')
 
@@ -123,31 +126,21 @@ class TDS220_Widget(QtWidgets.QWidget):
         if self.ui.runStopButton.isChecked():
             self.ui.runStopStatus.setText('STOP')
             self.ui.runStopButton.setChecked(False)
-        self.prevSweepMode = self.ui.sweepModeComboBox.currentText()
-        if self.prevSweepMode == 'AUTO':
-            self.ui.sweepModeComboBox.setCurrentText('NORM')
         self.ui.singleButton.setChecked(True)
         self.ui.triggerStatus.setText('Armed')
-        self.ui.sweepModeComboBox.setEnabled(False)
         self.ui.triggerSourceComboBox.setEnabled(False)
         self.ui.updateButton.setEnabled(False)
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.checkTER)
-        self.timer.setInterval(500)
-        self.timer.start()
         
     def singleClean(self, triggerStatusMessage):
         self.timer.stop()
         self.isSingleRun = False
         self.ui.singleButton.setChecked(False)
-        self.ui.sweepModeComboBox.setCurrentText(self.prevSweepMode)
         self.ui.triggerStatus.setText(triggerStatusMessage)
-        self.ui.sweepModeComboBox.setEnabled(True)
         self.ui.triggerSourceComboBox.setEnabled(True)
         self.ui.updateButton.setEnabled(True)
         
     def triggerForced(self):
-        self.oscilloscope.write(':TRIGger:FORCe')
+        self.oscilloscope.write(':TRIGger FORCe')
         
     def triggerSourceChanged(self, source):
         self.oscilloscope.write(':TRIGger:MAIn:EDGE:SOURce ' + source)
@@ -159,21 +152,38 @@ class TDS220_Widget(QtWidgets.QWidget):
     def triggerLevelChanged_Scroll(self,trigger_value):
         self.trigger_value = (trigger_value - 500 ) * self.trigger_mul / 1000
         self.ui.TriggerLevelText.setValue(self.trigger_value)
+        print(self.trigger_value)
         
     def triggerLevelChanged_TextBox(self,trigger_value):
         self.trigger_value = trigger_value
         self.ui.TriggerLevelScroll.setValue(max(min(500 + round(self.trigger_value * 1000 / self.trigger_mul), 500),-500))
+        print(self.trigger_value)
         
     def ScrollTriggerMulInc(self):
         self.trigger_mul = self.trigger_mul + 1
-        self.ui.TriggerLevelMul.setValue(self.trigger_mul)
+        self.ui.TriggerLevelMul.display(self.trigger_mul)
+        print(self.trigger_mul)
         
     def ScrollTriggerMulDec(self):
         if self.trigger_mul < 2:
             self.trigger_mul = self.trigger_mul - 1
-            self.ui.TriggerLevelMul.setValue(self.trigger_mul)
+            self.ui.TriggerLevelMul.display(self.trigger_mul)
         else:
             print('trigger_mul should be bigger or equal to 1')
+            
+        print(self.trigger_mul)
+            
+    def set_Ch1(self):
+        if self.ui.pushButton_Ch1.isChecked():
+            self.channelOn[0] = True
+        else:
+            self.channelOn[0] = False
+            
+    def set_Ch2(self):
+        if self.ui.pushButton_Ch2.isChecked():
+            self.channelOn[1] = True
+        else:
+            self.channelOn[1] = False
 
     def attachPlotToQWidget(self):
         self.fig = Figure(figsize=(4,3), dpi=100)

@@ -78,6 +78,10 @@ class DSO_X_3034A_Widget(QtWidgets.QWidget):
         self.isSingleRun = False
         self.autoUpdate = False
         self.attachPlotToQWidget()
+        self.timer = QtCore.QTimer()
+        #self.timer.timeout.connect(self.checkTER)
+        self.timer.setInterval(500)
+        self.timer.start()
 
 
     def updateParameterStatus(self):
@@ -138,10 +142,6 @@ class DSO_X_3034A_Widget(QtWidgets.QWidget):
         self.ui.sweepModeComboBox.setEnabled(False)
         self.ui.triggerSourceComboBox.setEnabled(False)
         self.ui.updateButton.setEnabled(False)
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.checkTER)
-        self.timer.setInterval(500)
-        self.timer.start()
         
     def singleClean(self, triggerStatusMessage):
         self.timer.stop()
@@ -179,7 +179,7 @@ class DSO_X_3034A_Widget(QtWidgets.QWidget):
             print('Unknown sweep mode:', sweepMode)
         
     def triggerForced(self):
-        self.oscilloscope.write(':TRIGger:FORCe')
+        self.oscilloscope.write(':TRIGger FORCe')
         
     def triggerSourceChanged(self, source):
         self.oscilloscope.write(':TRIGger:EDGE:SOURce ' + source)

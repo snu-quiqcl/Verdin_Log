@@ -155,6 +155,7 @@ class Ui_OscilloscopeWidget(object):
         self.TriggerLevelScroll.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.TriggerLevelScroll.setMaximum(1000)
         self.TriggerLevelScroll.setSingleStep(1)
+        self.TriggerLevelScroll.setProperty("value", 500)
         self.TriggerLevelScroll.setOrientation(QtCore.Qt.Vertical)
         self.TriggerLevelScroll.setObjectName("TriggerLevelScroll")
         self.verticalLayout_5.addWidget(self.TriggerLevelScroll)
@@ -206,6 +207,8 @@ class Ui_OscilloscopeWidget(object):
         self.TriggerLevelScroll.valueChanged['int'].connect(OscilloscopeWidget.triggerLevelChanged_Scroll)
         self.pushButton.clicked.connect(OscilloscopeWidget.ScrollTriggerMulInc)
         self.Decrease.clicked.connect(OscilloscopeWidget.ScrollTriggerMulDec)
+        self.pushButton_Ch1.clicked.connect(OscilloscopeWidget.set_Ch1)
+        self.pushButton_Ch2.clicked.connect(OscilloscopeWidget.set_Ch2)
         QtCore.QMetaObject.connectSlotsByName(OscilloscopeWidget)
 
     def retranslateUi(self, OscilloscopeWidget):

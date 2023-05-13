@@ -16,6 +16,8 @@ import subprocess
 import io
 import time
 import socket
+import numpy as np
+from struct import unpack
 
 
 class TDS220(QtCore.QObject):
@@ -164,8 +166,7 @@ class TDS220(QtCore.QObject):
         Returns:
             None
         """
-        if self.ui.pushButton_Ch1.isChecked():
-            self.channelOn[0] = True
+        if self.channelOn[0] == True:
             self.write('SELECT:CH1 ON')
             self.write('ACQUire:MODe SAMPLE')
             self.write('ACQUire:STOPAFTER SEQUENCE')
@@ -178,11 +179,8 @@ class TDS220(QtCore.QObject):
             self.write('MEASUrement:IMMed:SOUrce CH1')  
             self.write('MEASUrement:IMMed:VALUE?')
             self.chan1VPP = float(self.read())/2
-        else:
-            self.channelOn[0] = False
         
-        if self.ui.pushButton_Ch2.isChecked():
-            self.channelOn[1] = True
+        if self.channelOn[1] == True:
             self.write('SELECT:CH2 ON')
             self.write('ACQUire:MODe SAMPLE')
             self.write('ACQUire:STOPAFTER SEQUENCE')
