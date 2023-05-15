@@ -188,10 +188,10 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.axes = self.fig.add_subplot(111)
 
         self.axes.set_xlim(0, self.xpoints)
-        self.axes.set_ylim(0, 256)
+        self.axes.set_ylim(-256, 256)
 
         self.axes.set_xticks(np.arange(0, self.xpoints+1, self.xpoints/10))
-        self.axes.set_yticks(np.arange(0, 257, 32))
+        self.axes.set_yticks(np.arange(-257, 257, 32))
 
         self.axes.set_xticklabels([])
         self.axes.set_yticklabels([])

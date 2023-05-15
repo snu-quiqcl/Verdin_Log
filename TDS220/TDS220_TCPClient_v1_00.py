@@ -114,7 +114,8 @@ class TDS220(QtCore.QObject):
             byte string: received string
         """
         self.socket.send(bytes('rr:' + messageWithoutNewline, 'latin-1'))
-        return (self.socket.recv(10000).decode('latin-1'))[:-1]
+        #raw data should not decoded
+        return (self.socket.recv(10000))[:-1]
         #return self.inst.read_raw(size)        
 
     def query(self, messageWithoutNewline, delay = None):

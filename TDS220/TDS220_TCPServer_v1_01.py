@@ -80,7 +80,9 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                     inst.write(data[3:])
                     reply = inst.read_raw(16)
                     print('Send:', reply)
-                    clientSocket.sendall(bytes(reply, 'latin-1'))
+                    #you should not encode reply, since it is raw data
+                    clientSocket.sendall(reply)
+                    instLock.release()
                 
                 data = clientSocket.recv(1024).decode('latin-1')
                 #print('Received:', data)
