@@ -32,6 +32,8 @@ from matplotlib.lines import Line2D
 sys.path.insert(0, '..')
 from TDS220.OscilloscopeWidgetUI_v1_02 import Ui_OscilloscopeWidget
 from TDS220.TDS220_TCPClient_v1_00 import TDS220
+from threading import Thread, Event, Lock
+import time
 
 
 progname = os.path.basename(sys.argv[0])
@@ -84,6 +86,14 @@ class TDS220_Widget(QtWidgets.QWidget):
         #self.timer.timeout.connect(self.checkTER)
         self.timer.setInterval(500)
         self.timer.start()
+        self.buttonList_ = [self.ui.pushButton_Ch1, self.ui.pushButton_Ch2, \
+                            self.ui.runStopButton, self.ui.singleButton, \
+                            self.ui.triggerForceButton, self.ui.SetTriggerLevel, \
+                            self.ui.updateButton]
+        self.event = Event()
+        self.event.clear()
+        self.auto_update_thread = Thread(target=self.updatePlot_caller)
+        self.auto_update_thread.start()
 
 
     def updateParameterStatus(self):
@@ -221,7 +231,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.axes.grid(which='both')
 
         # Adding curve to the plot
-        self.line1 = Line2D(range(0, self.xpoints), [128]*self.xpoints, color='y')
+        self.line1 = Line2D(range(0, self.xpoints), [128]*self.xpoints, color='r')
         # http://matplotlib.org/api/artist_api.html#matplotlib.lines.Line2D
         self.axes.add_line(self.line1)
         self.line2 = Line2D(range(0, self.xpoints), [128]*self.xpoints, color='g')
@@ -237,18 +247,31 @@ class TDS220_Widget(QtWidgets.QWidget):
 
     def autoUpdate(self, checked):
         if checked:
-            self.autoUpdateTimer = QtCore.QTimer()
-            self.autoUpdateTimer.timeout.connect(self.updatePlot)
-            self.autoUpdateTimer.setInterval(self.ui.updateIntervalSpinBox.value()*1000)
-            self.autoUpdateTimer.start()            
+            #self.autoUpdateTimer = QtCore.QTimer()
+            #self.autoUpdateTimer.timeout.connect(self.updatePlot)
+            #self.autoUpdateTimer.setInterval(self.ui.updateIntervalSpinBox.value()*1000)
+            #self.autoUpdateTimer.start()          
+            self.event.set()
             self.autoUpdate = True
             self.ui.autoUpdateButton.setFlat(True)
-            self.ui.updateButton.setDisabled(True)
+            for button in range(self.buttonList_):
+                button.setDisabled(True)
         else:
-            self.autoUpdateTimer.stop()
+            self.event.clear()
+            #self.autoUpdateTimer.stop()
             self.autoUpdate = False
             self.ui.autoUpdateButton.setFlat(False)
-            self.ui.updateButton.setDisabled(False)
+            for button in range(self.buttonList_):
+                button.setDisabled(False)
+                
+    def updatePlot_caller(self):
+        index_ = 0
+        while True:
+            self.event.wait()
+            if index_ == 0:
+                self.updatePlot()
+            time.sleep(1)
+            index_ = ( index_ + 1 ) % self.ui.updateIntervalSpinBox.value()
 
         
     def updatePlot(self):
