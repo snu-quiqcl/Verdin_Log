@@ -91,8 +91,25 @@ class TDS220_Widget(QtWidgets.QWidget):
             totalQuery = ':TRIGger:MAIn:EDGE:SOURce?'
             status = self.oscilloscope.query(totalQuery)
             (triggerEdgeSource) = status
+            #SELect:CH1? -> 0 OFF or 1 ON
+            totalQuery = ':SELect:CH1?;:SELect:CH2?;'
+            [ch1on, ch2on] = self.oscilloscope.query(totalQuery).split(';')
+            if ch1on == '0':
+                self.oscilloscope.channelOn[0] = False
+                self.ui.pushButton_Ch1.setFlat(False)
+            else:
+                self.oscilloscope.channelOn[0] = True
+                self.ui.pushButton_Ch1.setFlat(True)
+                
+            if ch2on == '0':
+                self.oscilloscope.channelOn[1] = False
+                self.ui.pushButton_Ch2.setFlat(False)
+            else:
+                self.oscilloscope.channelOn[1] = True
+                self.ui.pushButton_Ch2.setFlat(True)
             
             self.ui.triggerSourceComboBox.setCurrentText(triggerEdgeSource)
+            #CH1 , CH2 button setting
             
             self.deviceOpen = True
             self.isSingleRun = False
@@ -174,20 +191,25 @@ class TDS220_Widget(QtWidgets.QWidget):
     def set_Ch1(self):
         if self.ui.pushButton_Ch1.isChecked():
             self.oscilloscope.channelOn[0] = True
+            self.oscilloscope.write(':SELECT:CH1 ON')
         else:
             self.oscilloscope.channelOn[0] = False
+            self.oscilloscope.write(':SELECT:CH1 OFF')
             
     def set_Ch2(self):
         if self.ui.pushButton_Ch2.isChecked():
             self.oscilloscope.channelOn[1] = True
+            self.oscilloscope.write(':SELECT:CH2 ON')
         else:
             self.oscilloscope.channelOn[1] = False
+            self.oscilloscope.write(':SELECT:CH2 OFF')
 
     def attachPlotToQWidget(self):
         self.fig = Figure(figsize=(4,3), dpi=100)
         self.axes = self.fig.add_subplot(111)
 
         self.axes.set_xlim(0, self.xpoints)
+        # xpoints value?
         self.axes.set_ylim(-256, 256)
 
         self.axes.set_xticks(np.arange(0, self.xpoints+1, self.xpoints/10))
@@ -220,9 +242,13 @@ class TDS220_Widget(QtWidgets.QWidget):
             self.autoUpdateTimer.setInterval(self.ui.updateIntervalSpinBox.value()*1000)
             self.autoUpdateTimer.start()            
             self.autoUpdate = True
+            self.ui.autoUpdateButton.setFlat(True)
+            self.ui.updateButton.setDisabled(True)
         else:
             self.autoUpdateTimer.stop()
             self.autoUpdate = False
+            self.ui.autoUpdateButton.setFlat(False)
+            self.ui.updateButton.setDisabled(False)
 
         
     def updatePlot(self):

@@ -34,7 +34,7 @@ class TDS220(QtCore.QObject):
         self.chan1Freq = 0
         self.chan2Freq = 0
         self.channelOn = [True, True]
-        self.yscale = [True, True]
+        self.yscale = [1, 1]
 
     def setWidget(self, widget):
         self.widget = widget        
@@ -114,9 +114,15 @@ class TDS220(QtCore.QObject):
             byte string: received string
         """
         self.socket.send(bytes('rr:' + messageWithoutNewline, 'latin-1'))
-        #raw data should not decoded
-        return (self.socket.recv(10000))[:-1]
-        #return self.inst.read_raw(size)        
+        #raw data should not decoded. read data seems to be cut, so data should be concatenated
+        recvdata = ''.encode('latin-1')
+        while True:
+            new_recvdata = self.socket.recv(10000)
+            if new_recvdata[-1] == '\n':
+                recvdata = recvdata + new_recvdata[:-1]
+                return recvdata
+            else:
+                recvdata = recvdata + new_recvdata
 
     def query(self, messageWithoutNewline, delay = None):
         """ Send the message and read the reply.
@@ -129,7 +135,11 @@ class TDS220(QtCore.QObject):
             unicode string: reply string
         """
         self.socket.send(bytes('q:' + messageWithoutNewline, 'latin-1'))
-        return (self.socket.recv(10000).decode('latin-1'))[:-1] # Stripping '\n'
+        recvdata = None
+        while True:
+            recvdata = (self.socket.recv(10000).decode('latin-1'))[:-1]
+            if recvdata != '':
+                return recvdata
 
         #reply = self.inst.query(messageWithoutNewline, delay)
         #return reply[:-1] # Stripping '\n'

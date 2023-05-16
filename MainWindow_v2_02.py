@@ -80,7 +80,7 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
         ###################################################################
         
         self.oscilloscope = TDS220(defaultIPAddress = '172.22.22.86', defaultTCPPort = 3034)
-        self.oscilloscopeConnectionDialog = ConnectDialog(self, windowTitle = 'Connection to DSO3034A')
+        self.oscilloscopeConnectionDialog = ConnectDialog(self, windowTitle = 'Connection to TDS220')
         self.oscilloscopeConnectionDialog.setDevice(self.oscilloscope, 'TDS220_TCPServer_v2_00.py')
         self.oscilloscopeConnectionDialog.setMenuActionList([self.ui.actionOscilloscopeControl])
         self.oscilloscopeWidget = TDS220_Widget(self, self.oscilloscope)
@@ -147,7 +147,7 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
         self.chillerControlDialog.show()
 
     ###################################################################
-    ## Methods related to DSO-X-3034A
+    ## Methods related to TDS220
     ###################################################################
     def openTDS220_Connection(self):
         self.oscilloscopeConnectionDialog.updateParameterStatus()
