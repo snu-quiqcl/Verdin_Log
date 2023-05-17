@@ -69,16 +69,78 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             while len(data):
                 instLock.acquire()
                 if data[0:2] == 'w:':
-                    inst.write(data[2:])
+                    success = False
+                    failcount = 0
+                    while not success:
+                        try:
+                            inst.write(data[2:])
+                            success = True
+                        except:
+                            if failcount > 5:
+                                inst.close()
+                                server.shutdown()
+                                raise Exception('Communication error between Oscilloscope and RPI')
+                                return
+                            time.sleep(2)
+                            failcount = failcount + 1
+                            print('Failed ' + str(failcount))
+                            instLock.release()
+                            inst.close()
+                            inst = rm.open_resource(VISADevice)
+                            inst.encoding = 'latin-1'
+                            instLock.acquire()
+                            
                     instLock.release()
+                    
                 elif data[0:2] == 'q:':
-                    reply=inst.query(data[2:], None)
+                    success = False
+                    failcount = 0
+                    while not success:
+                        try:
+                            reply=inst.query(data[2:], None)
+                            success = True
+                        except:
+                            if failcount > 5:
+                                inst.close()
+                                server.shutdown()
+                                raise Exception('Communication error between Oscilloscope and RPI')
+                                return
+                            time.sleep(2)
+                            failcount = failcount + 1
+                            print('Failed ' + str(failcount))
+                            instLock.release()
+                            inst.close()
+                            inst = rm.open_resource(VISADevice)
+                            inst.encoding = 'latin-1'
+                            instLock.acquire()
+                            
                     instLock.release()
                     print('Send:', reply)
                     clientSocket.sendall(bytes(reply, 'latin-1'))
+                    
                 elif data[0:3] == 'rr:':
-                    inst.write(data[3:])
-                    reply = inst.read_raw(16)
+                    success = False
+                    failcount = 0
+                    while not success:
+                        try:
+                            inst.write(data[3:])
+                            reply = inst.read_raw(16)
+                            success = True
+                        except:
+                            if failcount > 5:
+                                inst.close()
+                                server.shutdown()
+                                raise Exception('Communication error between Oscilloscope and RPI')
+                                return
+                            time.sleep(2)
+                            failcount = failcount + 1
+                            print('Failed ' + str(failcount))
+                            instLock.release()
+                            inst.close()
+                            inst = rm.open_resource(VISADevice)
+                            inst.encoding = 'latin-1'
+                            instLock.acquire()
+                            
                     print('Send:', reply)
                     #you should not encode reply, since it is raw data
                     clientSocket.sendall(reply)
@@ -125,7 +187,7 @@ def get_ip_address(ifname):
 
 
 if __name__ == "__main__":
-    global inst, instLock, activeClientSocket
+    global inst, instLock, activeClientSocket, rm
     argv = sys.argv
     try:
         opts, args = getopt.getopt(argv[1:],"s:p:h",['help'])

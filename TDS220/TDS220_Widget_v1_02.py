@@ -249,11 +249,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.canvas1.draw()
 
     def autoUpdate(self, checked):
-        if checked:
-            #self.autoUpdateTimer = QtCore.QTimer()
-            #self.autoUpdateTimer.timeout.connect(self.updatePlot)
-            #self.autoUpdateTimer.setInterval(self.ui.updateIntervalSpinBox.value()*1000)
-            #self.autoUpdateTimer.start()          
+        if checked:       
             self.event.set()
             self.autoUpdate = True
             self.ui.autoUpdateButton.setChecked(True)
@@ -261,7 +257,6 @@ class TDS220_Widget(QtWidgets.QWidget):
                 button.setDisabled(True)
         else:
             self.event.clear()
-            #self.autoUpdateTimer.stop()
             self.autoUpdate = False
             self.ui.autoUpdateButton.setChecked(False)
             for button in self.buttonList_:
@@ -281,6 +276,11 @@ class TDS220_Widget(QtWidgets.QWidget):
 
         
     def updatePlot(self):
+        if self.autoUpdate == False:
+            for button in self.buttonList_:
+                button.setDisabled(True)
+            self.ui.autoUpdateButton.setDisabled(True)
+            
         self.oscilloscope.readAllActiveData()
         self.drawPlot()
         
@@ -299,6 +299,11 @@ class TDS220_Widget(QtWidgets.QWidget):
             ('Ch2 Freq: %s\n' % chan2FreqString) + \
             ('Ch2 VPk2Pk: %s\n' % makeVoltageString(float(self.oscilloscope.chan2VPP)))
         self.ui.MeasurementLabel.setText(text)
+        
+        if self.autoUpdate == False:
+            for button in self.buttonList_:
+                button.setDisabled(False)
+            self.ui.autoUpdateButton.setDisabled(False)
     
     def drawPlot(self):
         xscale = self.oscilloscope.xscale

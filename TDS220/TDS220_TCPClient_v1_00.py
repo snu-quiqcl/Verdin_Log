@@ -38,8 +38,9 @@ class TDS220(QtCore.QObject):
         self.numofXdata = 2450
         self.numofXdiv = 10
         self.numofYdata = 512
-        self.numofYdiv = 10
+        self.numofYdiv = 16
         self.timeperdiv = 1
+        self.points_num = 2450
 
     def setWidget(self, widget):
         self.widget = widget        
@@ -163,6 +164,13 @@ class TDS220(QtCore.QObject):
         """
 
         return self.query("*IDN?")
+    
+    def wait_for_busy(self, wait_time = 2):
+        while True:
+            time.sleep(wait_time)
+            ans = self.query('BUSY?')
+            if ans[0] == '0':
+                return
 
     def readAllActiveData(self):
         """ Reads data from active channels and stores the data in data 
@@ -184,10 +192,6 @@ class TDS220(QtCore.QObject):
         Returns:
             None
         """
-        while True:
-            ans = self.query('BUSY?')
-            if ans == '0':
-                break
         
         if self.channelOn[0] == True:
             TotalQuery = ':SELECT:CH1 ON;' + \
@@ -220,13 +224,7 @@ class TDS220(QtCore.QObject):
             self.chan2VPP = float(self.query(TotalQuery))
         
         TotalQuery = ':WFMPre:NR_PT?;'
-        self.xscale = int(self.query(TotalQuery))
-        
-        print(self.chan1Freq)
-        print(self.chan1VPP)
-        print(self.chan2Freq)
-        print(self.chan2VPP)
-        print(self.xscale)
+        self.points_num = int(self.query(TotalQuery))
             
         for n in range(2):
             ch = n+1
@@ -246,16 +244,10 @@ class TDS220(QtCore.QObject):
                 yzero = float(yzero)
                 yoff = float(yoff)
                 xincr = float(xincr)
-                print(ymult)
-                print(yzero) 
-                print(yoff) 
-                print(xincr)
-                
                 
                 TotalQuery = ':CURVE?;'
                 data = self.write_read_raw(TotalQuery)
                 headerlen = 2 + int(data[1])
-                header = data[:headerlen]
                 ADC_wave = data[headerlen:-1]
                 
                 ADC_wave = np.array(unpack('%sB' % len(ADC_wave),ADC_wave))
@@ -263,23 +255,19 @@ class TDS220(QtCore.QObject):
                 
                 Volts = (ADC_wave - yoff) * ymult  + yzero
                 
-                Time = np.arange(0, xincr * len(Volts), xincr)
                 self.timeperdiv = xincr * self.numofXdata / self.numofXdiv
                 
                 Volts = Volts.tolist()
-                self.yscale[n] = (max(Volts) - min(Volts)) * 100 / (9 * self.numofYdata)
+                self.yscale[n] = (max(Volts) - min(Volts)) * 320/ (9 * self.numofYdata)
                 Delta = (max(Volts) - min(Volts))
-                for i_ in Volts:
-                    i_ = i_ * self.numofYdata * 9 / (10 * Delta)
-                Time = Time.tolist()
+                for i_ in range(len(Volts)):
+                    Volts[i_] = Volts[i_] * self.numofYdata * 9 / (20 * Delta)
+                self.xscale = self.numofXdata * xincr / self.numofXdiv
                 self.ydata.append(Volts)
-                print(self.ydata)
                 
-        self.write(':ACQUire:STOPAFTER RUNStop;:ACQUire:STATE RUN;')
-        while True:
-            ans = self.query('BUSY?')
-            if ans == '0':
-                return
+            else:
+                self.ydata.append([])
+                
 
 
 
