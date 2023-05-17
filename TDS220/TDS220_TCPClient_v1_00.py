@@ -118,7 +118,7 @@ class TDS220(QtCore.QObject):
         recvdata = ''.encode('latin-1')
         while True:
             new_recvdata = self.socket.recv(10000)
-            if new_recvdata[-1] == '\n':
+            if new_recvdata[-1] == ord('\n'):
                 recvdata = recvdata + new_recvdata[:-1]
                 return recvdata
             else:

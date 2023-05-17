@@ -34,7 +34,7 @@ from TDS220.OscilloscopeWidgetUI_v1_02 import Ui_OscilloscopeWidget
 from TDS220.TDS220_TCPClient_v1_00 import TDS220
 from threading import Thread, Event, Lock
 import time
-
+import math
 
 progname = os.path.basename(sys.argv[0])
 progversion = "0.1"
@@ -74,7 +74,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.parent = parent
         self.oscilloscope = device
 
-        self.xpoints = 1000
+        self.xpoints = 2450
 #        self.show()
         self.deviceOpen = False
         self.isSingleRun = False
@@ -106,17 +106,17 @@ class TDS220_Widget(QtWidgets.QWidget):
             [ch1on, ch2on] = self.oscilloscope.query(totalQuery).split(';')
             if ch1on == '0':
                 self.oscilloscope.channelOn[0] = False
-                self.ui.pushButton_Ch1.setFlat(False)
+                self.ui.pushButton_Ch1.setChecked(False)
             else:
                 self.oscilloscope.channelOn[0] = True
-                self.ui.pushButton_Ch1.setFlat(True)
+                self.ui.pushButton_Ch1.setChecked(True)
                 
             if ch2on == '0':
                 self.oscilloscope.channelOn[1] = False
-                self.ui.pushButton_Ch2.setFlat(False)
+                self.ui.pushButton_Ch2.setChecked(False)
             else:
                 self.oscilloscope.channelOn[1] = True
-                self.ui.pushButton_Ch2.setFlat(True)
+                self.ui.pushButton_Ch2.setChecked(True)
             
             self.ui.triggerSourceComboBox.setCurrentText(triggerEdgeSource)
             #CH1 , CH2 button setting
@@ -163,6 +163,9 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.ui.triggerStatus.setText(triggerStatusMessage)
         self.ui.triggerSourceComboBox.setEnabled(True)
         self.ui.updateButton.setEnabled(True)
+    
+    def AutoSet(self):
+        self.oscilloscope.write(':AUTOSet EXECUTE')
         
     def triggerForced(self):
         self.oscilloscope.write(':TRIGger FORCe')
@@ -253,15 +256,15 @@ class TDS220_Widget(QtWidgets.QWidget):
             #self.autoUpdateTimer.start()          
             self.event.set()
             self.autoUpdate = True
-            self.ui.autoUpdateButton.setFlat(True)
-            for button in range(self.buttonList_):
+            self.ui.autoUpdateButton.setChecked(True)
+            for button in self.buttonList_:
                 button.setDisabled(True)
         else:
             self.event.clear()
             #self.autoUpdateTimer.stop()
             self.autoUpdate = False
-            self.ui.autoUpdateButton.setFlat(False)
-            for button in range(self.buttonList_):
+            self.ui.autoUpdateButton.setChecked(False)
+            for button in self.buttonList_:
                 button.setDisabled(False)
                 
     def updatePlot_caller(self):
@@ -269,9 +272,12 @@ class TDS220_Widget(QtWidgets.QWidget):
         while True:
             self.event.wait()
             if index_ == 0:
+                time.sleep(self.ui.updateIntervalSpinBox.value() - \
+                           math.floor(self.ui.updateIntervalSpinBox.value()))
                 self.updatePlot()
-            time.sleep(1)
-            index_ = ( index_ + 1 ) % self.ui.updateIntervalSpinBox.value()
+            else:
+                time.sleep(1)
+            index_ = ( index_ + 1 ) % math.floor(self.ui.updateIntervalSpinBox.value() + 1)
 
         
     def updatePlot(self):

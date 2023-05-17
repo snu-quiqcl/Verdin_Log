@@ -14,35 +14,6 @@
    <string>Oscilloscope</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="2" column="1">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>300</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Measurements</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QLabel" name="MeasurementLabel">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="Measurement_Immed">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0" rowspan="4">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -188,123 +159,6 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="1">
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="3">
-      <widget class="QLabel" name="triggerStatus">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Source</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="triggerSourceComboBox">
-         <item>
-          <property name="text">
-           <string>CH1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>CH2</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="runStopButton">
-       <property name="text">
-        <string>RUN/
-STOP</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="triggerForceButton">
-       <property name="text">
-        <string>Trigger
-Force</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="runStopStatus">
-       <property name="text">
-        <string>STOP</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="singleButton">
-       <property name="text">
-        <string>Single</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="3" column="1">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="2">
-      <widget class="QDoubleSpinBox" name="updateIntervalSpinBox">
-       <property name="minimum">
-        <double>1.500000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>100.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.500000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1" rowspan="2">
-      <widget class="QPushButton" name="updateButton">
-       <property name="text">
-        <string>Update</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Interval (s)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3" rowspan="2">
-      <widget class="QPushButton" name="autoUpdateButton">
-       <property name="text">
-        <string>Auto
-update</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="2" rowspan="4">
     <layout class="QVBoxLayout" name="verticalLayout_5">
      <item>
@@ -404,6 +258,159 @@ update</string>
       <widget class="QPushButton" name="SetTriggerLevel">
        <property name="text">
         <string>SetTrigger</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="1">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="1" column="2">
+      <widget class="QDoubleSpinBox" name="updateIntervalSpinBox">
+       <property name="minimum">
+        <double>4.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>100.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.500000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" rowspan="2">
+      <widget class="QPushButton" name="updateButton">
+       <property name="text">
+        <string>Update</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Interval (s)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3" rowspan="2">
+      <widget class="QPushButton" name="autoUpdateButton">
+       <property name="text">
+        <string>Auto
+update</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>300</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Measurements</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="MeasurementLabel">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="Measurement_Immed">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="3">
+      <widget class="QLabel" name="triggerStatus">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Source</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="triggerSourceComboBox">
+         <item>
+          <property name="text">
+           <string>CH1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>CH2</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="runStopButton">
+       <property name="text">
+        <string>RUN/
+STOP</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="triggerForceButton">
+       <property name="text">
+        <string>Trigger
+Force</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="runStopStatus">
+       <property name="text">
+        <string>STOP</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="singleButton">
+       <property name="text">
+        <string>Single</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="AutoSet_Button">
+       <property name="text">
+        <string>AutoSet</string>
        </property>
       </widget>
      </item>
@@ -621,6 +628,22 @@ update</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>AutoSet_Button</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>AutoSet()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>488</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openDevice()</slot>
@@ -638,5 +661,6 @@ update</string>
   <slot>ScrollTriggerMulDec()</slot>
   <slot>set_Ch1()</slot>
   <slot>set_Ch2()</slot>
+  <slot>AutoSet()</slot>
  </slots>
 </ui>
