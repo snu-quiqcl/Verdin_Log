@@ -184,6 +184,11 @@ class TDS220(QtCore.QObject):
         Returns:
             None
         """
+        while True:
+            ans = self.query('BUSY?')
+            if ans == '0':
+                break
+        
         if self.channelOn[0] == True:
             TotalQuery = ':SELECT:CH1 ON;' + \
                 ':ACQUire:MODe SAMPLE;' + \
