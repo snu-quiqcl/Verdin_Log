@@ -249,7 +249,6 @@ class TDS220(QtCore.QObject):
                 
                 TotalQuery = ':CURVE?;'
                 data = self.write_read_raw(TotalQuery)
-                print(data)
                 headerlen = 2 + int(data[1])
                 header = data[:headerlen]
                 ADC_wave = data[headerlen:-1]
@@ -263,15 +262,19 @@ class TDS220(QtCore.QObject):
                 self.timeperdiv = xincr * self.numofXdata / self.numofXdiv
                 
                 Volts = Volts.tolist()
-                self.yscale = (max(Volts) - min(Volts)) * 100 / (9 * self.numofYdata)
+                self.yscale[n] = (max(Volts) - min(Volts)) * 100 / (9 * self.numofYdata)
                 Delta = (max(Volts) - min(Volts))
                 for i_ in Volts:
-                    Volts[i_] = Volts[i_] * self.numofYdata * 9 / (10 * Delta)
+                    i_ = i_ * self.numofYdata * 9 / (10 * Delta)
                 Time = Time.tolist()
                 self.ydata.append(Volts)
                 print(self.ydata)
                 
         self.write(':ACQUire:STOPAFTER RUNStop;:ACQUire:STATE RUN;')
+        while True:
+            ans = self.query('BUSY?')
+            if ans == '0':
+                return
 
 
 
