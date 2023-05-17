@@ -295,9 +295,9 @@ class TDS220_Widget(QtWidgets.QWidget):
             chan2FreqString = makeFrequencyString(float(self.oscilloscope.chan2Freq))
         
         text = ('Ch1 Freq: %s\n' % chan1FreqString) + \
-            ('Ch1 VPP: %s\n' % makeVoltageString(float(self.oscilloscope.chan1VPP))) + \
+            ('Ch1 VPk2Pk: %s\n' % makeVoltageString(float(self.oscilloscope.chan1VPP))) + \
             ('Ch2 Freq: %s\n' % chan2FreqString) + \
-            ('Ch2 VPP: %s\n' % makeVoltageString(float(self.oscilloscope.chan2VPP)))
+            ('Ch2 VPk2Pk: %s\n' % makeVoltageString(float(self.oscilloscope.chan2VPP)))
         self.ui.MeasurementLabel.setText(text)
     
     def drawPlot(self):
@@ -308,7 +308,7 @@ class TDS220_Widget(QtWidgets.QWidget):
             chYscale = self.oscilloscope.yscale[n]
             chLine = self.lineList[n]
             if self.buttonList[n].isChecked():
-                self.scaleList[n].setText('%s/    ' % makeVoltageString(chYscale, 0))
+                self.scaleList[n].setText('%s/DIV' % makeVoltageString(chYscale, 0))
                 chLine.set_data(range(0, len(self.oscilloscope.ydata[n])), 
                                 self.oscilloscope.ydata[n])
                 chLine.set_visible(True)

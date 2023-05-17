@@ -35,6 +35,11 @@ class TDS220(QtCore.QObject):
         self.chan2Freq = 0
         self.channelOn = [True, True]
         self.yscale = [1, 1]
+        self.numofXdata = 2450
+        self.numofXdiv = 10
+        self.numofYdata = 512
+        self.numofYdiv = 10
+        self.timeperdiv = 1
 
     def setWidget(self, widget):
         self.widget = widget        
@@ -192,7 +197,7 @@ class TDS220(QtCore.QObject):
             TotalQuery = ':MEASUrement:IMMed:TYPe PK2pk;' + \
                 ':MEASUrement:IMMed:SOUrce CH1;' + \
                 ':MEASUrement:IMMed:VALUE?;'
-            self.chan1VPP = float(self.query(TotalQuery))/2
+            self.chan1VPP = float(self.query(TotalQuery))
         
         if self.channelOn[1] == True:
             TotalQuery = ':SELECT:CH2 ON;' + \
@@ -207,7 +212,7 @@ class TDS220(QtCore.QObject):
             TotalQuery = ':MEASUrement:IMMed:TYPe PK2pk;' + \
                 ':MEASUrement:IMMed:SOUrce CH2;' + \
                 ':MEASUrement:IMMed:VALUE?;'
-            self.chan2VPP = float(self.query(TotalQuery))/2
+            self.chan2VPP = float(self.query(TotalQuery))
         
         TotalQuery = ':WFMPre:NR_PT?;'
         self.xscale = int(self.query(TotalQuery))
@@ -255,11 +260,18 @@ class TDS220(QtCore.QObject):
                 Volts = (ADC_wave - yoff) * ymult  + yzero
                 
                 Time = np.arange(0, xincr * len(Volts), xincr)
+                self.timeperdiv = xincr * self.numofXdata / self.numofXdiv
                 
                 Volts = Volts.tolist()
+                self.yscale = (max(Volts) - min(Volts)) * 100 / (9 * self.numofYdata)
+                Delta = (max(Volts) - min(Volts))
+                for i_ in Volts:
+                    Volts[i_] = Volts[i_] * self.numofYdata * 9 / (10 * Delta)
                 Time = Time.tolist()
                 self.ydata.append(Volts)
                 print(self.ydata)
+                
+        self.write(':ACQUire:STOPAFTER RUNStop;:ACQUire:STATE RUN;')
 
 
 
