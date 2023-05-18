@@ -81,13 +81,10 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                                 server.shutdown()
                                 raise Exception('Communication error between Oscilloscope and RPI')
                                 return
-                            time.sleep(2)
                             failcount = failcount + 1
                             print('Failed ' + str(failcount))
                             instLock.release()
-                            inst.close()
-                            inst = rm.open_resource(VISADevice)
-                            inst.encoding = 'latin-1'
+                            self.reboot_system()
                             instLock.acquire()
                             
                     instLock.release()
@@ -105,13 +102,10 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                                 server.shutdown()
                                 raise Exception('Communication error between Oscilloscope and RPI')
                                 return
-                            time.sleep(2)
                             failcount = failcount + 1
                             print('Failed ' + str(failcount))
                             instLock.release()
-                            inst.close()
-                            inst = rm.open_resource(VISADevice)
-                            inst.encoding = 'latin-1'
+                            self.reboot_system()
                             instLock.acquire()
                             
                     instLock.release()
@@ -132,13 +126,10 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                                 server.shutdown()
                                 raise Exception('Communication error between Oscilloscope and RPI')
                                 return
-                            time.sleep(2)
                             failcount = failcount + 1
                             print('Failed ' + str(failcount))
                             instLock.release()
-                            inst.close()
-                            inst = rm.open_resource(VISADevice)
-                            inst.encoding = 'latin-1'
+                            self.reboot_system()
                             instLock.acquire()
                             
                     print('Send:', reply)
@@ -164,6 +155,17 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
             print('\nActive connection is closed. Waiting for a new active connection...\n')
             raise
         print('\nActive connection is closed. Waiting for a new active connection...\n')
+    
+    def reboot_system(self):
+        global inst, rm, VISADevice
+        time.sleep(2)
+        inst.close()
+        rm.close()
+        rm.visalib._registry.clear()
+        rm = visa.ResourceManager('@py')
+        print(rm.list_resources())
+        inst = rm.open_resource(VISADevice)
+        inst.encoding = 'latin-1'
         
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
@@ -187,7 +189,7 @@ def get_ip_address(ifname):
 
 
 if __name__ == "__main__":
-    global inst, instLock, activeClientSocket, rm
+    global inst, instLock, activeClientSocket, rm, VISADevice
     argv = sys.argv
     try:
         opts, args = getopt.getopt(argv[1:],"s:p:h",['help'])

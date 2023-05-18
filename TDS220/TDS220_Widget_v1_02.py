@@ -49,7 +49,11 @@ def makeFrequencyString(freq):
 
 def makeVoltageString(volt, numberOfDigitAfterDecimalPoint = 1):
     format = '%%.%df' % numberOfDigitAfterDecimalPoint
-    if volt < 1.0:
+    if volt < 1e-6:
+        return ((format +'uV') % (volt*1e9))
+    elif volt < 1e-3:
+        return ((format +'uV') % (volt*1e6))
+    elif volt < 1.0:
         return ((format +'mV') % (volt*1e3))
     else:
         return ((format +'V') % volt)
