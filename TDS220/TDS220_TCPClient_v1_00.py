@@ -192,6 +192,7 @@ class TDS220(QtCore.QObject):
         Returns:
             None
         """
+        self.ydata = []
         
         if self.channelOn[0] == True:
             TotalQuery = ':SELECT:CH1 ON;' + \
@@ -223,8 +224,9 @@ class TDS220(QtCore.QObject):
                 ':MEASUrement:IMMed:VALUE?;'
             self.chan2VPP = float(self.query(TotalQuery))
         
-        TotalQuery = ':WFMPre:NR_PT?;'
-        self.points_num = int(self.query(TotalQuery))
+        # this part makes error!!
+        #TotalQuery = ':WFMPre:NR_PT?;'
+        #self.points_num = int(self.query(TotalQuery))
             
         for n in range(2):
             ch = n+1

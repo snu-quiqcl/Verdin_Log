@@ -166,6 +166,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         print(rm.list_resources())
         inst = rm.open_resource(VISADevice)
         inst.encoding = 'latin-1'
+        time.sleep(4)
         
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
