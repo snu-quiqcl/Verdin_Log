@@ -6,15 +6,44 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1196</width>
-    <height>512</height>
+    <width>1403</width>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Oscilloscope</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0" rowspan="4">
+   <item row="3" column="1">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>300</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Measurements</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="MeasurementLabel">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="Measurement_Immed">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="5">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QFrame" name="frame">
@@ -159,7 +188,7 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="2" rowspan="4">
+   <item row="0" column="2" rowspan="5">
     <layout class="QVBoxLayout" name="verticalLayout_5">
      <item>
       <widget class="QLabel" name="label_2">
@@ -179,26 +208,234 @@
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="TriggerLevelScroll">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="maximum">
-        <number>1000</number>
-       </property>
-       <property name="singleStep">
-        <number>1</number>
-       </property>
-       <property name="value">
-        <number>500</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <item>
+        <widget class="QSlider" name="TriggerLevelScroll">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="maximum">
+          <number>1000</number>
+         </property>
+         <property name="singleStep">
+          <number>1</number>
+         </property>
+         <property name="value">
+          <number>500</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>CH1 Volts Scale</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLCDNumber" name="CH1_VoltsScale_Val">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="segmentStyle">
+                <enum>QLCDNumber::Filled</enum>
+               </property>
+               <property name="value" stdset="0">
+                <double>1.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <widget class="QPushButton" name="VoltsScaleDecrease">
+                 <property name="text">
+                  <string>Decrease</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="VoltsScaleIncrease">
+                 <property name="text">
+                  <string>Increase</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>CH2 Volts Scale</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLCDNumber" name="CH2_VoltsScale_Val">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="value" stdset="0">
+                <double>1.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <item>
+                <widget class="QPushButton" name="pushButton_2">
+                 <property name="text">
+                  <string>Decrease</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_3">
+                 <property name="text">
+                  <string>Increase</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item alignment="Qt::AlignHCenter">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Horizontal Scale</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLCDNumber" name="HorizontalScale_Val">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="value" stdset="0">
+              <double>0.000010000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QPushButton" name="HorizontalScaleDecrease">
+               <property name="text">
+                <string>Decrease</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="HorizontalScaleIncrease">
+               <property name="text">
+                <string>Increase</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>CH1</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="CH1_AC">
+             <property name="text">
+              <string>AC</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="CH1_DC">
+             <property name="text">
+              <string>DC</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="CH1_GND">
+             <property name="text">
+              <string>GND</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>CH2</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="CH2_AC">
+             <property name="text">
+              <string>AC</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="CH2_DC">
+             <property name="text">
+              <string>DC</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="CH2_GND">
+             <property name="text">
+              <string>GND</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QLabel" name="label_5">
@@ -263,7 +500,7 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="1" column="2">
       <widget class="QDoubleSpinBox" name="updateIntervalSpinBox">
@@ -305,44 +542,8 @@ update</string>
      </item>
     </layout>
    </item>
-   <item row="2" column="1">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>300</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Measurements</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QLabel" name="MeasurementLabel">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="Measurement_Immed">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="1">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="3">
-      <widget class="QLabel" name="triggerStatus">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="3">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
@@ -368,6 +569,14 @@ update</string>
        </item>
       </layout>
      </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="triggerForceButton">
+       <property name="text">
+        <string>Trigger
+Force</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="runStopButton">
        <property name="text">
@@ -382,14 +591,6 @@ STOP</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="triggerForceButton">
-       <property name="text">
-        <string>Trigger
-Force</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QLabel" name="runStopStatus">
        <property name="text">
@@ -397,7 +598,14 @@ Force</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="AutoSet_Button">
+       <property name="text">
+        <string>AutoSet</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
       <widget class="QPushButton" name="singleButton">
        <property name="text">
         <string>Single</string>
@@ -407,10 +615,18 @@ Force</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="AutoSet_Button">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="LOG_START">
        <property name="text">
-        <string>AutoSet</string>
+        <string>LOG
+START</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="Log_State">
+       <property name="text">
+        <string>STOP</string>
        </property>
       </widget>
      </item>
@@ -443,7 +659,7 @@ Force</string>
    <slot>runStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>536</x>
+     <x>516</x>
      <y>63</y>
     </hint>
     <hint type="destinationlabel">
@@ -491,8 +707,8 @@ Force</string>
    <slot>single()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>718</x>
-     <y>55</y>
+     <x>623</x>
+     <y>115</y>
     </hint>
     <hint type="destinationlabel">
      <x>394</x>
@@ -555,8 +771,8 @@ Force</string>
    <slot>triggerLevelChanged_Scroll(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>830</x>
-     <y>348</y>
+     <x>891</x>
+     <y>370</y>
     </hint>
     <hint type="destinationlabel">
      <x>1195</x>
@@ -603,8 +819,8 @@ Force</string>
    <slot>set_Ch1()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>194</x>
-     <y>425</y>
+     <x>205</x>
+     <y>467</y>
     </hint>
     <hint type="destinationlabel">
      <x>5</x>
@@ -644,6 +860,214 @@ Force</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>HorizontalScaleDecrease</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>HorizontalScaleDecrease()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1010</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>861</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>HorizontalScaleIncrease</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>HorizontalScaleIncrease()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1244</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>861</x>
+     <y>261</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH1_AC</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>set_CH1_AC()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1060</x>
+     <y>313</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>859</x>
+     <y>306</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH1_DC</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>set_CH1_DC()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1206</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>863</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH1_GND</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>set_CH1_GND()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1323</x>
+     <y>307</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>865</x>
+     <y>382</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH2_AC</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>set_CH2_AC()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1092</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>862</x>
+     <y>408</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH2_DC</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>set_CH2_DC()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1197</x>
+     <y>353</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>864</x>
+     <y>433</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH2_GND</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>set_CH2_GND()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1349</x>
+     <y>354</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1308</x>
+     <y>377</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LOG_START</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>Log_Start()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>717</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>863</x>
+     <y>23</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>VoltsScaleDecrease</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>CH1_VoltsScaleDecrease()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>964</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1308</x>
+     <y>218</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>VoltsScaleIncrease</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>CH1_VoltsScaleIncrease()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1066</x>
+     <y>161</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1333</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>CH2_VoltsScaleDecrease()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1193</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1402</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>OscilloscopeWidget</receiver>
+   <slot>CH2_VoltsScaleIncrease()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1321</x>
+     <y>165</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1402</x>
+     <y>269</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openDevice()</slot>
@@ -662,5 +1086,18 @@ Force</string>
   <slot>set_Ch1()</slot>
   <slot>set_Ch2()</slot>
   <slot>AutoSet()</slot>
+  <slot>CH1_VoltsScaleIncrease()</slot>
+  <slot>CH1_VoltsScaleDecrease()</slot>
+  <slot>HorizontalScaleDecrease()</slot>
+  <slot>HorizontalScaleIncrease()</slot>
+  <slot>set_CH1_AC()</slot>
+  <slot>set_CH1_DC()</slot>
+  <slot>set_CH1_GND()</slot>
+  <slot>set_CH2_AC()</slot>
+  <slot>set_CH2_DC()</slot>
+  <slot>set_CH2_GND()</slot>
+  <slot>Log_Start()</slot>
+  <slot>CH2_VoltsScaleDecrease()</slot>
+  <slot>CH2_VoltsScaleIncrease()</slot>
  </slots>
 </ui>

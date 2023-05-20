@@ -32,6 +32,7 @@ from matplotlib.lines import Line2D
 sys.path.insert(0, '..')
 from TDS220.OscilloscopeWidgetUI_v1_02 import Ui_OscilloscopeWidget
 from TDS220.TDS220_TCPClient_v1_00 import TDS220
+from TDS220.TDS220_Logger_v1_00 import logger
 from threading import Thread, Event, Lock
 import time
 import math
@@ -93,11 +94,23 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.buttonList_ = [self.ui.pushButton_Ch1, self.ui.pushButton_Ch2, \
                             self.ui.runStopButton, self.ui.singleButton, \
                             self.ui.triggerForceButton, self.ui.SetTriggerLevel, \
-                            self.ui.updateButton]
+                            self.ui.updateButton, self.CH1_DC, self.CH2_DC, \
+                            self.ui.CH1_AC, self.ui.CH2_AC, self.ui.CH1_GND,\
+                            self.ui.LOG_START, self.ui.CH2_GND, self.ui.autoUpdateButton]
         self.event = Event()
         self.event.clear()
         self.auto_update_thread = Thread(target=self.updatePlot_caller)
         self.auto_update_thread.start()
+        self.horizontal_scale_list = [[1,2.5,5],[1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,\
+                                    1e-3,1e-2,1e-1,1],['1','2.5','5'],['E-9',\
+                                    'E-8','E-7','E-6','E-5','E-4','E-3','E-2',\
+                                    'E-1','']]
+        self.current_horizontal_scale = [0,0]
+        self.votls_scale_list = [[1,2.5,5],[1e-3,1e-2,1e-1,1],['1','2.5',\
+                                    '5'],['E-3','E-2','E-1','']]
+        self.current_CH1_votls_scale = [0,0]
+        self.current_CH2_votls_scale = [0,0]
+        self.logger = logger.TDS220_Logger(self)
 
 
     def updateParameterStatus(self):
@@ -124,6 +137,41 @@ class TDS220_Widget(QtWidgets.QWidget):
             
             self.ui.triggerSourceComboBox.setCurrentText(triggerEdgeSource)
             #CH1 , CH2 button setting
+            totalQuery = ':HORizontal:MAIn:SCAle?;'
+            [horiz_scale] = self.oscilloscope.query(totalQuery).split(';')
+            print(horiz_scale)
+            for i_ in range(len(self.horizontal_scale_list[0])):
+                for j_ in range(len(self.horizontal_scale_list[1])):
+                    if float(horiz_scale) == self.horizontal_scale_list[0][i_]\
+                        * self.horizontal_scale_list[1][j_]:
+                            self.current_horizontal_scale = [i_,j_]
+            
+            self.ui.HorizontalScale_Val.display(self.volts_scale_list[0][self.current_CH1_votls_scale[0]] *
+                                           self.volts_scale_list[1][self.current_CH1_votls_scale[1]])
+                            
+            totalQuery = ':CH1:SCAle?;'
+            [ch1_scale] = self.oscilloscope.query(totalQuery).split(';')
+            print(ch1_scale)
+            for i_ in range(len(self.votls_scale_list[0])):
+                for j_ in range(len(self.votls_scale_list[1])):
+                    if float(horiz_scale) == self.votls_scale_list[0][i_]\
+                        * self.votls_scale_list[1][j_]:
+                            self.current_CH1_votls_scale = [i_,j_]
+                            
+            self.ui.CH1_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH1_votls_scale[0]] *
+                                           self.volts_scale_list[1][self.current_CH1_votls_scale[1]])
+                            
+            totalQuery = ':CH2:SCAle?;'
+            [ch2_scale] = self.oscilloscope.query(totalQuery).split(';')
+            print(ch2_scale)
+            for i_ in range(len(self.votls_scale_list[0])):
+                for j_ in range(len(self.votls_scale_list[1])):
+                    if float(horiz_scale) == self.votls_scale_list[0][i_]\
+                        * self.votls_scale_list[1][j_]:
+                            self.current_CH2_votls_scale = [i_,j_]
+            
+            self.ui.CH2_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH2_votls_scale[0]] *
+                                           self.volts_scale_list[1][self.current_CH2_votls_scale[1]])
             
             self.deviceOpen = True
             self.isSingleRun = False
@@ -220,6 +268,122 @@ class TDS220_Widget(QtWidgets.QWidget):
         else:
             self.oscilloscope.channelOn[1] = False
             self.oscilloscope.write(':SELECT:CH2 OFF')
+            
+    def CH1_VoltsScaleIncrease(self):
+        if self.current_CH1_votls_scale[0] == 2 and \
+            self.current_CH1_votls_scale[1] == len(self.volts_scale_list):
+            return
+        
+        self.current_CH1_votls_scale[0] = self.current_CH1_votls_scale[0] + 1
+        if self.current_CH1_votls_scale[0] > 2:
+            self.current_CH1_votls_scale[0] = 0
+            self.current_CH1_votls_scale[1] = self.current_CH1_votls_scale[1] + 1
+        
+        self.oscilloscope.write(':CH1:SCALE '+self.volts_scale_list[2][self.current_CH1_votls_scale[0]]\
+                                +self.volts_scale_list[3][self.current_CH1_votls_scale[1]]+';')
+        
+        self.ui.CH1_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH1_votls_scale[0]] *
+                                       self.volts_scale_list[1][self.current_CH1_votls_scale[1]])
+    def CH1_VoltsScaleDecrease(self):
+        if self.current_CH1_votls_scale[0] == 2 and self.current_CH1_votls_scale[1] == 0:
+            return
+        
+        self.current_CH1_votls_scale[0] = self.current_CH1_votls_scale[0] - 1
+        if self.current_CH1_votls_scale[0] < 0:
+            self.current_CH1_votls_scale[0] = 2
+            self.current_CH1_votls_scale[1] = self.current_CH1_votls_scale[1] - 1
+        
+        self.oscilloscope.write(':CH1:SCALE '+self.volts_scale_list[2][self.current_CH1_votls_scale[0]]\
+                                +self.volts_scale_list[3][self.current_CH1_votls_scale[1]]+';')
+        
+        self.ui.CH1_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH2_votls_scale[0]] *
+                                       self.volts_scale_list[1][self.current_CH2_votls_scale[1]])
+    def CH2_VoltsScaleIncrease(self):
+        if self.current_CH2_votls_scale[0] == 2 and \
+            self.current_CH2_votls_scale[1] == len(self.volts_scale_list):
+            return
+        
+        self.current_CH2_votls_scale[0] = self.current_CH2_votls_scale[0] + 1
+        if self.current_CH2_votls_scale[0] > 2:
+            self.current_CH2_votls_scale[0] = 0
+            self.current_CH2_votls_scale[1] = self.current_CH2_votls_scale[1] + 1
+        
+        self.oscilloscope.write(':CH2:SCALE '+self.volts_scale_list[2][self.current_CH2_votls_scale[0]]\
+                                +self.volts_scale_list[3][self.current_CH2_votls_scale[1]]+';')
+        
+        self.ui.CH2_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH2_votls_scale[0]] *
+                                       self.volts_scale_list[1][self.current_CH2_votls_scale[1]])
+    def CH2_VoltsScaleDecrease(self):
+        if self.current_CH2_votls_scale[0] == 2 and self.current_CH2_votls_scale[1] == 0:
+            return
+        
+        self.current_CH2_votls_scale[0] = self.current_CH2_votls_scale[0] - 1
+        if self.current_CH2_votls_scale[0] < 0:
+            self.current_CH2_votls_scale[0] = 2
+            self.current_CH2_votls_scale[1] = self.current_CH2_votls_scale[1] - 1
+        
+        self.oscilloscope.write(':CH2:SCALE '+self.volts_scale_list[2][self.current_CH2_votls_scale[0]]\
+                                +self.volts_scale_list[3][self.current_CH2_votls_scale[1]]+';')
+        
+        self.ui.CH2_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH2_votls_scale[0]] *
+                                       self.volts_scale_list[1][self.current_CH2_votls_scale[1]])
+    def HorizontalScaleDecrease(self):
+        if self.current_horizontal_scale[0] == 2 and self.current_horizontal_scale[1] == 0:
+            return
+        
+        self.current_horizontal_scale[0] = self.current_horizontal_scale[0] - 1
+        if self.current_horizontal_scale[0] < 0:
+            self.current_horizontal_scale[0] = 2
+            self.current_horizontal_scale[1] = self.current_horizontal_scale[1] - 1
+        
+        self.oscilloscope.write(':HORIZONTAL:SCALE '+self.horizontal_scale_list[2][self.current_horizontal_scale[0]]\
+                                +self.horizontal_scale_list[3][self.current_horizontal_scale[1]]+';')
+        
+        self.ui.CH2_VoltsScale_Val.display(self.horizontal_scale_list[0][self.current_horizontal_scale[0]] *
+                                       self.horizontal_scale_list[1][self.current_horizontal_scale[1]])
+    
+    def HorizontalScaleIncrease(self):
+        if self.current_horizontal_scale[1] == len(self.horizontal_scale_list[1]) - 1 \
+            and self.current_horizontal_scale[0] == len(self.horizontal_scale_list[0]) - 1:
+            return
+        
+        self.current_horizontal_scale[0] = self.current_horizontal_scale[0] + 1
+        if self.current_horizontal_scale[0] > 2:
+            self.current_horizontal_scale[0] = 0
+            self.current_horizontal_scale[1] = self.current_horizontal_scale[1] + 1
+        
+        self.oscilloscope.write(':HORIZONTAL:SCALE '+self.horizontal_scale_list[2][self.current_horizontal_scale[0]]\
+                                +self.horizontal_scale_list[3][self.current_horizontal_scale[1]]+';')
+        
+        self.ui.HorizontalScale_Val.display(self.horizontal_scale_list[0][self.current_horizontal_scale[0]] *
+                                       self.horizontal_scale_list[1][self.current_horizontal_scale[1]])
+            
+    def set_CH1_AC(self):
+        self.oscilloscope.write(':CH1:COUPLing AC;')
+    def set_CH1_DC(self):
+        self.oscilloscope.write(':CH1:COUPLing DC;')
+    def set_CH1_GND(self):
+        self.oscilloscope.write(':CH1:COUPLing GND;')
+    def set_CH2_AC(self):
+        self.oscilloscope.write(':CH2:COUPLing AC;')
+    def set_CH2_DC(self):
+        self.oscilloscope.write(':CH2:COUPLing DC;')
+    def set_CH2_GND(self):
+        self.oscilloscope.write(':CH2:COUPLing GND;')
+    def Log_Start(self):
+        if not self.logger.log_running():
+            for button in self.buttonList_:
+                if not button == self.ui.LOG_START:
+                    button.setDisabled(True)
+            self.logger.start_log()
+            #auto update code should be updated
+            self.ui.setText('LOGGING')
+        else:
+            self.logger.end_log()
+            for button in self.buttonList_:
+                if not button == self.ui.LOG_START:
+                    button.setDisabled(False)
+            self.ui.setText('STOP')
 
     def attachPlotToQWidget(self):
         self.fig = Figure(figsize=(4,3), dpi=100)
@@ -258,13 +422,15 @@ class TDS220_Widget(QtWidgets.QWidget):
             self.autoUpdate = True
             self.ui.autoUpdateButton.setChecked(True)
             for button in self.buttonList_:
-                button.setDisabled(True)
+                if not button == self.ui.autoUpdateButton:
+                    button.setDisabled(True)
         else:
             self.event.clear()
             self.autoUpdate = False
             self.ui.autoUpdateButton.setChecked(False)
             for button in self.buttonList_:
-                button.setDisabled(False)
+                if not button == self.ui.autoUpdateButton:
+                    button.setDisabled(False)
                 
     def updatePlot_caller(self):
         index_ = 0
