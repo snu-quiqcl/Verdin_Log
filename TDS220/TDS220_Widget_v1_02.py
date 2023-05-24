@@ -99,7 +99,8 @@ class TDS220_Widget(QtWidgets.QWidget):
                             self.ui.LOG_START, self.ui.CH2_GND, self.ui.autoUpdateButton,\
                             self.ui.CH1_VoltsScaleDecrease, self.ui.CH1_VoltsScaleIncrease,\
                             self.ui.CH2_VoltsScaleDecrease, self.ui.CH2_VoltsScaleIncrease,\
-                            self.ui.HorizontalScaleDecrease, self.ui.HorizontalScaleIncrease]
+                            self.ui.HorizontalScaleDecrease, self.ui.HorizontalScaleIncrease,\
+                            self.ui.AutoSet_Button]
         self.event = Event()
         self.event.clear()
         self.auto_update_thread = Thread(target=self.updatePlot_caller)
@@ -451,7 +452,8 @@ class TDS220_Widget(QtWidgets.QWidget):
     def updatePlot(self):
         if self.autoUpdate == False:
             for button in self.buttonList_:
-                button.setDisabled(True)
+                if not button == self.ui.LOG_START:
+                    button.setDisabled(True)
             self.ui.autoUpdateButton.setDisabled(True)
             
         self.oscilloscope.readAllActiveData()
@@ -472,11 +474,6 @@ class TDS220_Widget(QtWidgets.QWidget):
             ('Ch2 Freq: %s\n' % chan2FreqString) + \
             ('Ch2 VPk2Pk: %s\n' % makeVoltageString(float(self.oscilloscope.chan2VPP)))
         self.ui.MeasurementLabel.setText(text)
-        
-        if self.autoUpdate == False:
-            for button in self.buttonList_:
-                button.setDisabled(False)
-            self.ui.autoUpdateButton.setDisabled(False)
     
     def drawPlot(self):
         xscale = self.oscilloscope.xscale

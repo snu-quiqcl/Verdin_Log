@@ -35,11 +35,11 @@ class TDS220_Logger:
         
         
     def start_log(self):
-        if self.logger_thread.is_alive():
+        if self.log_running():
             print('Already logging started')
         else:
-            self.event.set()
-        print('Start Log')
+            print('Start Log')
+        self.event.set()
         
     def loging_func(self):
         oscilloscope = self.parent.oscilloscope
@@ -48,7 +48,7 @@ class TDS220_Logger:
             self.event.wait()
             index_ = 0
             if oscilloscope.isConnected():
-                log_header = 'CH1 Freq, CH1 Pk2Pk, CH2 Freq, CH2 Pk2Pk'
+                log_header = 'Data and time, CH1 Freq, CH1 Pk2Pk, CH2 Freq, CH2 Pk2Pk'
                 
                 #print(log_header)
                 
@@ -66,9 +66,9 @@ class TDS220_Logger:
                             print('Collecting new data at', datetime.datetime.now().isoformat())
                             self.parent.updatePlot()
                             log_line = ''
-                            log_line = self.parent.oscilloscope.chan1Freq +\
-                                        self.parent.oscilloscope.chan1VPP +\
-                                        self.parent.oscilloscope.chan2Freq +\
+                            log_line = self.parent.oscilloscope.chan1Freq + ',' +\
+                                        self.parent.oscilloscope.chan1VPP + ',' +\
+                                        self.parent.oscilloscope.chan2Freq + ',' +\
                                         self.parent.oscilloscope.chan2VPP
                             logfile.write(log_line)
                     

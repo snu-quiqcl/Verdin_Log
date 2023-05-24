@@ -40,11 +40,11 @@ class Verdi_Logger:
         
         
     def start_log(self):
-        if self.logger_thread.is_alive():
+        if self.log_running():
             print('Already logging started')
         else:
-            self.event.set()
-        print('Start Log')
+            print('Start Log')
+        self.event.set()
         
     def loging_func(self):
         v18 = self.parent.verdi
