@@ -21,7 +21,7 @@ for each_path in new_path_list:
     if not (each_path in sys.path):
         sys.path.append(each_path)
 
-import dataLoggerdataLogger_v1_03 as dataLogger
+import dataLogger.dataLogger_v1_03 as dataLogger
 log_filename_prefix = os.path.abspath(dirname + '/logs/vanadate_temp_')
 import V18.Verdi_v1_02 as Verdi
 Verdi.DEBUG = False
