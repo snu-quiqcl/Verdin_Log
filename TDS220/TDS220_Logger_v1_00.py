@@ -18,7 +18,7 @@ for each_path in new_path_list:
     if not (each_path in sys.path):
         sys.path.append(each_path)
 
-import dataLogger_v1_03 as dataLogger
+import dataLogger.dataLogger_v1_03 as dataLogger
 log_filename_prefix = os.path.abspath(dirname + '/logs/TDS220_temp_')
 
 import time, datetime
