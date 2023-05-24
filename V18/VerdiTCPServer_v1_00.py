@@ -48,6 +48,19 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         clientAddress = clientSocket.getpeername()
         print("%s: Connection request from %s" % \
               (datetime.datetime.now().isoformat(), clientAddress))
+        if (threading.activeCount() > 2):
+            activeClientAddress = activeClientSocket.getpeername()
+            clientSocket.sendall(bytes('A:%s:%d' % activeClientAddress, 'latin-1'))
+            clientSocket.close()
+            print("%s: Refused connection from %s due to active connection with %s" % \
+                  (datetime.datetime.now().isoformat(), 
+                   clientAddress, activeClientAddress))
+            return
+        else:
+            activeClientSocket = clientSocket
+            clientSocket.sendall(bytes('C:', 'latin-1'))
+            print('\nConnection from (%s,%d) became active connection\n' % clientAddress)
+            
         try:
             data = clientSocket.recv(1024)
             while len(data):

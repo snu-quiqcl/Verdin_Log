@@ -96,7 +96,10 @@ class TDS220_Widget(QtWidgets.QWidget):
                             self.ui.triggerForceButton, self.ui.SetTriggerLevel, \
                             self.ui.updateButton, self.ui.CH1_DC, self.ui.CH2_DC, \
                             self.ui.CH1_AC, self.ui.CH2_AC, self.ui.CH1_GND,\
-                            self.ui.LOG_START, self.ui.CH2_GND, self.ui.autoUpdateButton]
+                            self.ui.LOG_START, self.ui.CH2_GND, self.ui.autoUpdateButton,\
+                            self.ui.CH1_VoltsScaleDecrease, self.ui.CH1_VoltsScaleIncrease,\
+                            self.ui.CH2_VoltsScaleDecrease, self.ui.CH2_VoltsScaleIncrease,\
+                            self.ui.HorizontalScaleDecrease, self.ui.HorizontalScaleIncrease]
         self.event = Event()
         self.event.clear()
         self.auto_update_thread = Thread(target=self.updatePlot_caller)
@@ -377,13 +380,13 @@ class TDS220_Widget(QtWidgets.QWidget):
                     button.setDisabled(True)
             self.logger.start_log()
             #auto update code should be updated
-            self.ui.setText('LOGGING')
+            self.ui.Log_State.setText('LOGGING')
         else:
             self.logger.end_log()
             for button in self.buttonList_:
                 if not button == self.ui.LOG_START:
                     button.setDisabled(False)
-            self.ui.setText('STOP')
+            self.ui.Log_State.setText('STOP')
 
     def attachPlotToQWidget(self):
         self.fig = Figure(figsize=(4,3), dpi=100)

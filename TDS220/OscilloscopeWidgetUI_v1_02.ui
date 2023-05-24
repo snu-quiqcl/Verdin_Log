@@ -263,14 +263,14 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_7">
                <item>
-                <widget class="QPushButton" name="VoltsScaleDecrease">
+                <widget class="QPushButton" name="CH1_VoltsScaleDecrease">
                  <property name="text">
                   <string>Decrease</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="VoltsScaleIncrease">
+                <widget class="QPushButton" name="CH1_VoltsScaleIncrease">
                  <property name="text">
                   <string>Increase</string>
                  </property>
@@ -308,14 +308,14 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_12">
                <item>
-                <widget class="QPushButton" name="pushButton_2">
+                <widget class="QPushButton" name="CH2_VoltsScaleDecrease">
                  <property name="text">
                   <string>Decrease</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_3">
+                <widget class="QPushButton" name="CH2_VoltsScaleIncrease">
                  <property name="text">
                   <string>Increase</string>
                  </property>
@@ -465,14 +465,14 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QPushButton" name="Decrease">
+          <widget class="QPushButton" name="Trigger_Decrease">
            <property name="text">
             <string>Decrease</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="Trigger_Increase">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -781,7 +781,7 @@ START</string>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>Trigger_Increase</sender>
    <signal>clicked()</signal>
    <receiver>OscilloscopeWidget</receiver>
    <slot>ScrollTriggerMulInc()</slot>
@@ -797,7 +797,7 @@ START</string>
    </hints>
   </connection>
   <connection>
-   <sender>Decrease</sender>
+   <sender>Trigger_Decrease</sender>
    <signal>clicked()</signal>
    <receiver>OscilloscopeWidget</receiver>
    <slot>ScrollTriggerMulDec()</slot>
@@ -1005,7 +1005,7 @@ START</string>
    </hints>
   </connection>
   <connection>
-   <sender>VoltsScaleDecrease</sender>
+   <sender>CH1_VoltsScaleDecrease</sender>
    <signal>clicked()</signal>
    <receiver>OscilloscopeWidget</receiver>
    <slot>CH1_VoltsScaleDecrease()</slot>
@@ -1021,7 +1021,7 @@ START</string>
    </hints>
   </connection>
   <connection>
-   <sender>VoltsScaleIncrease</sender>
+   <sender>CH1_VoltsScaleIncrease</sender>
    <signal>clicked()</signal>
    <receiver>OscilloscopeWidget</receiver>
    <slot>CH1_VoltsScaleIncrease()</slot>
@@ -1037,7 +1037,7 @@ START</string>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>CH2_VoltsScaleDecrease</sender>
    <signal>clicked()</signal>
    <receiver>OscilloscopeWidget</receiver>
    <slot>CH2_VoltsScaleDecrease()</slot>
@@ -1053,7 +1053,7 @@ START</string>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>CH2_VoltsScaleIncrease</sender>
    <signal>clicked()</signal>
    <receiver>OscilloscopeWidget</receiver>
    <slot>CH2_VoltsScaleIncrease()</slot>
