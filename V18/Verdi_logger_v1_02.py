@@ -14,14 +14,14 @@ filename = os.path.abspath(__file__)
 dirname = os.path.dirname(filename)
 
 new_path_list = []
-new_path_list.append(os.path.abspath(dirname + \
-    '/../../../../../../Device Control Scripts/python libraries/dataLogger')) # To import dataLogger
+#new_path_list.append(os.path.abspath(dirname + \
+#    '/../../../../../../Device Control Scripts/python libraries/dataLogger')) # To import dataLogger
 # More paths can be added here...
 for each_path in new_path_list:
     if not (each_path in sys.path):
         sys.path.append(each_path)
 
-import dataLogger_v1_03 as dataLogger
+import dataLoggerdataLogger_v1_03 as dataLogger
 log_filename_prefix = os.path.abspath(dirname + '/logs/vanadate_temp_')
 import V18.Verdi_v1_02 as Verdi
 Verdi.DEBUG = False
