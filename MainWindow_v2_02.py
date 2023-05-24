@@ -25,6 +25,7 @@ import V18.Verdi_v1_02 as Verdi
 from ThermoTekConnection_v1_00 import ThermoTekConnectDialog
 from ThermoTek.ThermoTek_v1_00 import ChillerControlDialog
 import ThermoTek.ThermoTek_T255P_v1_00 as T255P
+import ThermoTek.ThermoTek_T255P_v1_00_Logger as chiller_Logger
 
 from ConnectionDialogWidget_v1_00 import ConnectDialog
 #Oscilloscope
@@ -74,6 +75,7 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
 
         self.chillerConnectionDialog = ThermoTekConnectDialog(self)
         self.chillerControlDialog = ChillerControlDialog(self)
+        self.chiller_Logger = chiller_Logger(self)
         
         ###################################################################
         ## Settings for TDS220
@@ -145,6 +147,19 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
         self.chillerControlDialog.updateParameterStatus()
         #self.chillerControlDialog.exec_()
         self.chillerControlDialog.show()
+        
+    def openChiller_Log_Start(self):
+        print('Chiller Log Start')
+        self.chiller_Logger.start_log()
+        self.ui.actionChiller_Log_Start.setEnabled(False)
+        self.ui.actionChiller_Log_End.setEnabled(True)
+        
+    def openChiller_Log_End(self):
+        print('Chiller Log End')
+        self.chiller_Logger.end_log()
+        self.ui.actionchiller_Log_End.setEnabled(False)
+        self.ui.actionchiller_Log_Start.setEnabled(True)
+
 
     ###################################################################
     ## Methods related to TDS220

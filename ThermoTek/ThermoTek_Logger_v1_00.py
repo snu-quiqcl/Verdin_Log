@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri May 19 15:15:54 2023
+Created on Wed May 24 20:04:22 2023
 
 @author: alexi
 """
+
 
 from __future__ import unicode_literals
 import os, sys
@@ -25,7 +26,7 @@ import time, datetime
 from threading import Thread, Event
 import math
 
-class TDS220_Logger:
+class T255P_Logger:
     def __init__(self, parent = None):
         self.parent = parent
         self.event = Event()
@@ -42,13 +43,13 @@ class TDS220_Logger:
         self.event.set()
         
     def loging_func(self):
-        oscilloscope = self.parent.oscilloscope
+        chiller = self.parent.chiller
         index_ = 0
         while True:
             self.event.wait()
             index_ = 0
-            if oscilloscope.isConnected():
-                log_header = 'Data and time, CH1 Freq, CH1 Pk2Pk, CH2 Freq, CH2 Pk2Pk'
+            if chiller.isConnected():
+                log_header = 'Data and time, Current Temperature, Set Temperature, Alarms, Chiller ON/OFF, Dryer ON/OFF'
                 
                 #print(log_header)
                 
@@ -61,15 +62,12 @@ class TDS220_Logger:
                 while True:
                     try:
                         if index_ == 0 :
-                            time.sleep(self.parent.ui.updateIntervalSpinBox.value() - \
-                                       math.floor(self.parent.ui.updateIntervalSpinBox.value()))
                             print('Collecting new data at', datetime.datetime.now().isoformat())
                             self.parent.updatePlot()
-                            log_line = ''
-                            log_line = str(self.parent.oscilloscope.chan1Freq) + ',' +\
-                                        str(self.parent.oscilloscope.chan1VPP) + ',' +\
-                                        str(self.parent.oscilloscope.chan2Freq) + ',' +\
-                                        str(self.parent.oscilloscope.chan2VPP)
+                            log_line = ('%s' % str(chiller.getCurrentTemperature()))
+                            log_line += (', %s' % str(chiller.getSetTemperature()))
+                            status = chiller.getChillerStatus()
+                            log_line += (', %s, %s, %s' % status[1],status[2],status[3])
                             logfile.write(log_line)
                     
                             #print(log_line)
@@ -84,11 +82,11 @@ class TDS220_Logger:
                     
                     time.sleep(1)
                     
-                    index_ = ( index_ + 1 ) % math.floor(self.parent.ui.updateIntervalSpinBox.value() + 1)
+                    index_ = ( index_ + 1 ) % 60
                 
                 logfile.close()
             else:
-                raise Exception('oscilloscope is not connected')
+                raise Exception('chiller is not connected')
     
     def end_log(self):
         if self.logger_thread.is_alive():

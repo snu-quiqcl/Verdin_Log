@@ -35,7 +35,7 @@ class Verdi_Logger:
         self.parent = parent
         self.event = Event()
         self.event.clear()
-        self.logger_thread = Thread(target=self.loging_func)
+        self.logger_thread = Thread(target=self.loging_func,daemon=True)
         self.logger_thread.start()
         
         

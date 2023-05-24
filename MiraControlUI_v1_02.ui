@@ -27,9 +27,20 @@
     <property name="title">
      <string>Chiller</string>
     </property>
+    <widget class="QMenu" name="menuChiller_Log">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Chiller Log</string>
+     </property>
+     <addaction name="actionChiller_Log_Start"/>
+     <addaction name="actionChiller_Log_End"/>
+    </widget>
     <addaction name="actionConnection_to_Chiller"/>
     <addaction name="separator"/>
     <addaction name="actionChiller_Control"/>
+    <addaction name="menuChiller_Log"/>
    </widget>
    <widget class="QMenu" name="menuVerdi">
     <property name="title">
@@ -147,6 +158,16 @@
   <action name="actionVerdi_Log_End">
    <property name="text">
     <string>Verdi_Log_End</string>
+   </property>
+  </action>
+  <action name="actionChiller_Log_Start">
+   <property name="text">
+    <string>Chiller Log Start</string>
+   </property>
+  </action>
+  <action name="actionChiller_Log_End">
+   <property name="text">
+    <string>Chiller Log End</string>
    </property>
   </action>
  </widget>
@@ -344,6 +365,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionChiller_Log_Start</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openChiller_Log_Start()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionChiller_Log_End</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openChiller_Log_End()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openVerdiFrontPanel()</slot>
@@ -358,5 +411,7 @@
   <slot>openVerdi_Log_Start()</slot>
   <slot>openVerdi_Log_End()</slot>
   <slot>openTDS220_Connection()</slot>
+  <slot>openChiller_Log_Start()</slot>
+  <slot>openChiller_Log_End()</slot>
  </slots>
 </ui>

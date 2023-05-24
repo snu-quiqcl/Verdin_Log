@@ -12,6 +12,7 @@ import sys
 import getopt
 import datetime
 from functools import reduce
+from threading import Thread, Event, Lock
 
 DEBUG = True
 
@@ -34,6 +35,7 @@ class T255P:
         self.IPAddress = defaultIPAddress
         self.TCPPort = defaultTCPPort
         self.socket = None
+        self.lock_ = Lock()
 
     def isConnected(self):
         if self.socket != None:
@@ -179,25 +181,26 @@ class T255P:
                 of the command, comm error status, the follwing checksum,
                 and CR are removed.)
         """
-        self.socket.send(bytes(self.makeMSG(msg), 'utf-8'))
-        response = self.socket.recv(20).decode('utf-8')
-        if DEBUG:
-            print('Received message:', repr(response))
-        responseText = self.extractReply(response)
-        msgLength = len(msg)
-        if msg != responseText[:msgLength]:
-            print("Response does not contain original query!")
-            return
-        if responseText[msgLength] == '1':
-            print("Checksum Error was reported by T255P")
-            return
-        elif responseText[msgLength] == '2':
-            print("Bad Command Error was reported by T255P")
-            return
-        elif responseText[msgLength] == '3':
-            print("Out of Bound Qualifier Error was reported by T255P")
-            return
-        return responseText[msgLength+1:]
+        with self.lock_:
+            self.socket.send(bytes(self.makeMSG(msg), 'utf-8'))
+            response = self.socket.recv(20).decode('utf-8')
+            if DEBUG:
+                print('Received message:', repr(response))
+            responseText = self.extractReply(response)
+            msgLength = len(msg)
+            if msg != responseText[:msgLength]:
+                print("Response does not contain original query!")
+                return
+            if responseText[msgLength] == '1':
+                print("Checksum Error was reported by T255P")
+                return
+            elif responseText[msgLength] == '2':
+                print("Bad Command Error was reported by T255P")
+                return
+            elif responseText[msgLength] == '3':
+                print("Out of Bound Qualifier Error was reported by T255P")
+                return
+            return responseText[msgLength+1:]
 
 
 # Supporting methods for chiller control
@@ -237,24 +240,25 @@ class T255P:
                 of the command, comm error status, the follwing checksum,
                 and CR are removed.)
         """
-        self.socket.send(bytes(self.makeMSG(msg), 'utf-8'))
-        response = self.socket.recv(20).decode('utf-8')
-        if DEBUG:
-            print('Received message:', repr(response))
-        responseText = self.extractReply(response)
-        if responseText[0] != msg[0]:
-            print("Response does not contain %s!" % msg[0])
-            return
-        if responseText[1] == '1':
-            print("Checksum Error was reported by T255P")
-            return
-        elif responseText[1] == '2':
-            print("Bad Command Error was reported by T255P")
-            return
-        elif responseText[1] == '3':
-            print("Out of Bound Qualifier Error was reported by T255P")
-            return
-        return responseText[2:]
+        with self.lock_:
+            self.socket.send(bytes(self.makeMSG(msg), 'utf-8'))
+            response = self.socket.recv(20).decode('utf-8')
+            if DEBUG:
+                print('Received message:', repr(response))
+            responseText = self.extractReply(response)
+            if responseText[0] != msg[0]:
+                print("Response does not contain %s!" % msg[0])
+                return
+            if responseText[1] == '1':
+                print("Checksum Error was reported by T255P")
+                return
+            elif responseText[1] == '2':
+                print("Bad Command Error was reported by T255P")
+                return
+            elif responseText[1] == '3':
+                print("Out of Bound Qualifier Error was reported by T255P")
+                return
+            return responseText[2:]
 
 # Raw protocol implementation
 

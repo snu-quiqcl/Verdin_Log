@@ -103,7 +103,7 @@ class TDS220_Widget(QtWidgets.QWidget):
                             self.ui.AutoSet_Button]
         self.event = Event()
         self.event.clear()
-        self.auto_update_thread = Thread(target=self.updatePlot_caller)
+        self.auto_update_thread = Thread(target=self.updatePlot_caller,daemon=True)
         self.auto_update_thread.start()
         self.horizontal_scale_list = [[1,2.5,5],[1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,\
                                     1e-3,1e-2,1e-1,1],['1','2.5','5'],['E-9',\
@@ -158,7 +158,7 @@ class TDS220_Widget(QtWidgets.QWidget):
             print(ch1_scale)
             for i_ in range(len(self.volts_scale_list[0])):
                 for j_ in range(len(self.volts_scale_list[1])):
-                    if float(horiz_scale) == self.volts_scale_list[0][i_]\
+                    if float(ch1_scale) == self.volts_scale_list[0][i_]\
                         * self.volts_scale_list[1][j_]:
                             self.current_CH1_volts_scale = [i_,j_]
                             
@@ -170,7 +170,7 @@ class TDS220_Widget(QtWidgets.QWidget):
             print(ch2_scale)
             for i_ in range(len(self.volts_scale_list[0])):
                 for j_ in range(len(self.volts_scale_list[1])):
-                    if float(horiz_scale) == self.volts_scale_list[0][i_]\
+                    if float(ch2_scale) == self.volts_scale_list[0][i_]\
                         * self.volts_scale_list[1][j_]:
                             self.current_CH2_volts_scale = [i_,j_]
             
@@ -275,7 +275,7 @@ class TDS220_Widget(QtWidgets.QWidget):
             
     def CH1_VoltsScaleIncrease(self):
         if self.current_CH1_volts_scale[0] == 2 and \
-            self.current_CH1_volts_scale[1] == len(self.volts_scale_list):
+            self.current_CH1_volts_scale[1] == (len(self.volts_scale_list)-1):
             return
         
         self.current_CH1_volts_scale[0] = self.current_CH1_volts_scale[0] + 1
@@ -300,11 +300,11 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.oscilloscope.write(':CH1:SCALE '+self.volts_scale_list[2][self.current_CH1_volts_scale[0]]\
                                 +self.volts_scale_list[3][self.current_CH1_volts_scale[1]]+';')
         
-        self.ui.CH1_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH2_volts_scale[0]] *
-                                       self.volts_scale_list[1][self.current_CH2_volts_scale[1]])
+        self.ui.CH1_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH1_volts_scale[0]] *
+                                       self.volts_scale_list[1][self.current_CH1_volts_scale[1]])
     def CH2_VoltsScaleIncrease(self):
         if self.current_CH2_volts_scale[0] == 2 and \
-            self.current_CH2_volts_scale[1] == len(self.volts_scale_list):
+            self.current_CH2_volts_scale[1] == (len(self.volts_scale_list)-1):
             return
         
         self.current_CH2_volts_scale[0] = self.current_CH2_volts_scale[0] + 1
@@ -343,7 +343,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.oscilloscope.write(':HORIZONTAL:SCALE '+self.horizontal_scale_list[2][self.current_horizontal_scale[0]]\
                                 +self.horizontal_scale_list[3][self.current_horizontal_scale[1]]+';')
         
-        self.ui.CH2_VoltsScale_Val.display(self.horizontal_scale_list[0][self.current_horizontal_scale[0]] *
+        self.ui.HorizontalScale_Val.display(self.horizontal_scale_list[0][self.current_horizontal_scale[0]] *
                                        self.horizontal_scale_list[1][self.current_horizontal_scale[1]])
     
     def HorizontalScaleIncrease(self):
@@ -491,6 +491,7 @@ class TDS220_Widget(QtWidgets.QWidget):
                 self.scaleList[n].setText('        ')
                 chLine.set_visible(False)
         self.canvas1.draw()
+        
 
     def closeEvent(self, event):
         if self.isSingleRun:

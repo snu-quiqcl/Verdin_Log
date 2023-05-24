@@ -20,6 +20,9 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menuChiller = QtWidgets.QMenu(self.menubar)
         self.menuChiller.setObjectName("menuChiller")
+        self.menuChiller_Log = QtWidgets.QMenu(self.menuChiller)
+        self.menuChiller_Log.setEnabled(False)
+        self.menuChiller_Log.setObjectName("menuChiller_Log")
         self.menuVerdi = QtWidgets.QMenu(self.menubar)
         self.menuVerdi.setObjectName("menuVerdi")
         self.menuVerdi_Log = QtWidgets.QMenu(self.menuVerdi)
@@ -62,9 +65,16 @@ class Ui_MainWindow(object):
         self.actionVerdi_Log_Start.setObjectName("actionVerdi_Log_Start")
         self.actionVerdi_Log_End = QtWidgets.QAction(MainWindow)
         self.actionVerdi_Log_End.setObjectName("actionVerdi_Log_End")
+        self.actionChiller_Log_Start = QtWidgets.QAction(MainWindow)
+        self.actionChiller_Log_Start.setObjectName("actionChiller_Log_Start")
+        self.actionChiller_Log_End = QtWidgets.QAction(MainWindow)
+        self.actionChiller_Log_End.setObjectName("actionChiller_Log_End")
+        self.menuChiller_Log.addAction(self.actionChiller_Log_Start)
+        self.menuChiller_Log.addAction(self.actionChiller_Log_End)
         self.menuChiller.addAction(self.actionConnection_to_Chiller)
         self.menuChiller.addSeparator()
         self.menuChiller.addAction(self.actionChiller_Control)
+        self.menuChiller.addAction(self.menuChiller_Log.menuAction())
         self.menuVerdi_Log.addAction(self.actionVerdi_Log_Start)
         self.menuVerdi_Log.addAction(self.actionVerdi_Log_End)
         self.menuVerdi.addAction(self.actionConnection_to_Verdi)
@@ -96,12 +106,15 @@ class Ui_MainWindow(object):
         self.actionOscilloscopeControl.triggered.connect(MainWindow.openOscilloscopeControl)
         self.actionVerdi_Log_Start.triggered.connect(MainWindow.openVerdi_Log_Start)
         self.actionVerdi_Log_End.triggered.connect(MainWindow.openVerdi_Log_End)
+        self.actionChiller_Log_Start.triggered.connect(MainWindow.openChiller_Log_Start)
+        self.actionChiller_Log_End.triggered.connect(MainWindow.openChiller_Log_End)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Mira Control"))
         self.menuChiller.setTitle(_translate("MainWindow", "Chiller"))
+        self.menuChiller_Log.setTitle(_translate("MainWindow", "Chiller Log"))
         self.menuVerdi.setTitle(_translate("MainWindow", "Verdi"))
         self.menuVerdi_Log.setTitle(_translate("MainWindow", "Verdi_Log"))
         self.menuOscilloscope.setTitle(_translate("MainWindow", "Oscilloscope"))
@@ -117,6 +130,8 @@ class Ui_MainWindow(object):
         self.actionOscilloscopeControl.setText(_translate("MainWindow", "Oscilloscope control"))
         self.actionVerdi_Log_Start.setText(_translate("MainWindow", "Verdi_Log_Start"))
         self.actionVerdi_Log_End.setText(_translate("MainWindow", "Verdi_Log_End"))
+        self.actionChiller_Log_Start.setText(_translate("MainWindow", "Chiller Log Start"))
+        self.actionChiller_Log_End.setText(_translate("MainWindow", "Chiller Log End"))
 
 
 if __name__ == "__main__":
