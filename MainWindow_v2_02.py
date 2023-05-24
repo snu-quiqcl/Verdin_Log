@@ -25,7 +25,7 @@ import V18.Verdi_v1_02 as Verdi
 from ThermoTekConnection_v1_00 import ThermoTekConnectDialog
 from ThermoTek.ThermoTek_v1_00 import ChillerControlDialog
 import ThermoTek.ThermoTek_T255P_v1_00 as T255P
-import ThermoTek.ThermoTek_T255P_v1_00_Logger as chiller_Logger
+from ThermoTek.ThermoTek_Logger_v1_00 import T255P_Logger as chiller_Logger
 
 from ConnectionDialogWidget_v1_00 import ConnectDialog
 #Oscilloscope
