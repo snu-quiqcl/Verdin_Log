@@ -156,6 +156,9 @@
    </property>
   </action>
   <action name="actionVerdi_Log_End">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Verdi_Log_End</string>
    </property>

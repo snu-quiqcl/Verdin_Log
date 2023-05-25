@@ -158,8 +158,8 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
     def openChiller_Log_End(self):
         print('Chiller Log End')
         self.chiller_Logger.end_log()
-        self.ui.actionchiller_Log_End.setEnabled(False)
-        self.ui.actionchiller_Log_Start.setEnabled(True)
+        self.ui.actionChiller_Log_End.setEnabled(False)
+        self.ui.actionChiller_Log_Start.setEnabled(True)
 
 
     ###################################################################

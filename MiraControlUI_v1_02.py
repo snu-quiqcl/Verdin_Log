@@ -64,6 +64,7 @@ class Ui_MainWindow(object):
         self.actionVerdi_Log_Start = QtWidgets.QAction(MainWindow)
         self.actionVerdi_Log_Start.setObjectName("actionVerdi_Log_Start")
         self.actionVerdi_Log_End = QtWidgets.QAction(MainWindow)
+        self.actionVerdi_Log_End.setEnabled(False)
         self.actionVerdi_Log_End.setObjectName("actionVerdi_Log_End")
         self.actionChiller_Log_Start = QtWidgets.QAction(MainWindow)
         self.actionChiller_Log_Start.setObjectName("actionChiller_Log_Start")

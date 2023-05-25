@@ -450,11 +450,9 @@ class TDS220_Widget(QtWidgets.QWidget):
 
         
     def updatePlot(self):
-        if self.autoUpdate == False:
+        if self.autoUpdate == False and not self.logger.log_running():
             for button in self.buttonList_:
-                if not button == self.ui.LOG_START:
-                    button.setDisabled(True)
-            self.ui.autoUpdateButton.setDisabled(True)
+                button.setDisabled(True)
             
         self.oscilloscope.readAllActiveData()
         self.drawPlot()
@@ -474,6 +472,10 @@ class TDS220_Widget(QtWidgets.QWidget):
             ('Ch2 Freq: %s\n' % chan2FreqString) + \
             ('Ch2 VPk2Pk: %s\n' % makeVoltageString(float(self.oscilloscope.chan2VPP)))
         self.ui.MeasurementLabel.setText(text)
+        
+        if self.autoUpdate == False and not self.logger.log_running():
+            for button in self.buttonList_:
+                button.setDisabled(False)
     
     def drawPlot(self):
         xscale = self.oscilloscope.xscale
