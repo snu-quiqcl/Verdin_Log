@@ -11,12 +11,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(874, 586)
+        MainWindow.resize(870, 578)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 874, 31))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 870, 31))
         self.menubar.setObjectName("menubar")
         self.menuChiller = QtWidgets.QMenu(self.menubar)
         self.menuChiller.setObjectName("menuChiller")

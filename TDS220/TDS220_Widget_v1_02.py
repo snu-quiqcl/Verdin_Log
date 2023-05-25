@@ -450,6 +450,7 @@ class TDS220_Widget(QtWidgets.QWidget):
 
         
     def updatePlot(self):
+        print(self.autoUpdate)
         if self.autoUpdate == False and not self.logger.log_running():
             for button in self.buttonList_:
                 button.setDisabled(True)

@@ -182,13 +182,6 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
     def enableSubMenus(self, menuActionList, enable = True):
         for eachAction in menuActionList:
             eachAction.setEnabled(enable)
-        
-        if enable == False:
-            self.ui.actionVerdi_Log_Start.setEnabled(True)
-        
-        if enable == True:
-            self.ui.actionVerdi_Log_End.setEnabled(False)
-        
 
         
     def closeEvent(self, event):

@@ -27,6 +27,11 @@ import math
 
 class TDS220_Logger:
     def __init__(self, parent = None):
+        try:
+            if not os.path.exists(os.path.abspath(dirname + '/logs')):
+                os.makedirs(os.path.abspath(dirname + '/logs'))
+        except OSError:
+            print("Error: Failed to create the directory.")
         self.parent = parent
         self.event = Event()
         self.event.clear()
@@ -97,4 +102,5 @@ class TDS220_Logger:
             raise Exception('Closing not opened thread')
             
     def log_running(self):
+        print(self.event.isSet())
         return self.event.isSet()
