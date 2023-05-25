@@ -1,2 +1,4 @@
 pyuic5 -x 실행파일 경로\파일명.ui -o 결과파일 경로\파일명.py
 pyuic5 -x OscilloscopeWidgetUI_v1_02.ui -o OscilloscopeWidgetUI_v1_02.py
+cd C:\Jeonghyun\GIT\Verdin_Log
+pyuic5 -x MiraControlUI_v1_02.ui -o MiraControlUI_v1_02.py

@@ -63,7 +63,6 @@ class T255P_Logger:
                     try:
                         if index_ == 0 :
                             print('Collecting new data at', datetime.datetime.now().isoformat())
-                            self.parent.updatePlot()
                             log_line = ('%s' % str(chiller.getCurrentTemperature()))
                             log_line += (', %s' % str(chiller.getSetTemperature()))
                             status = chiller.getChillerStatus()

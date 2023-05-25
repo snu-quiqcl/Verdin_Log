@@ -166,6 +166,9 @@
    </property>
   </action>
   <action name="actionChiller_Log_End">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Chiller Log End</string>
    </property>

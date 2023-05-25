@@ -68,6 +68,7 @@ class Ui_MainWindow(object):
         self.actionChiller_Log_Start = QtWidgets.QAction(MainWindow)
         self.actionChiller_Log_Start.setObjectName("actionChiller_Log_Start")
         self.actionChiller_Log_End = QtWidgets.QAction(MainWindow)
+        self.actionChiller_Log_End.setEnabled(False)
         self.actionChiller_Log_End.setObjectName("actionChiller_Log_End")
         self.menuChiller_Log.addAction(self.actionChiller_Log_Start)
         self.menuChiller_Log.addAction(self.actionChiller_Log_End)

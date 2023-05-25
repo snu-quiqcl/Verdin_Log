@@ -69,7 +69,8 @@ class MiraControlMainWindow(QtWidgets.QMainWindow):
         ###################################################################
         ## Settings for ThermoTek chiller
         ###################################################################
-        self.chillerMenuActionList = [self.ui.actionChiller_Control]
+        self.chillerMenuActionList = [self.ui.actionChiller_Control, \
+            self.ui.menuChiller_Log, self.ui.actionChiller_Log_Start]
         
         self.chiller = T255P.T255P()
 
