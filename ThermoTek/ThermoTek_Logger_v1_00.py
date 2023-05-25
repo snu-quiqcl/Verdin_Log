@@ -20,7 +20,7 @@ for each_path in new_path_list:
         sys.path.append(each_path)
 
 import dataLogger.dataLogger_v1_03 as dataLogger
-log_filename_prefix = os.path.abspath(dirname + '/logs/TDS220_temp_')
+log_filename_prefix = os.path.abspath(dirname + '/logs/T255P_temp_')
 
 import time, datetime
 from threading import Thread, Event
