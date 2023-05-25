@@ -69,7 +69,7 @@ class T255P_Logger:
                             log_line = ('%s' % str(chiller.getCurrentTemperature()))
                             log_line += (', %s' % str(chiller.getSetTemperature()))
                             status = chiller.getChillerStatus()
-                            log_line += ', ' + chiller.statusMessage(status[0]) \
+                            log_line += ', ' + chiller.statusMessage[status[0]] \
                                 + ', ' + status[1] + ', ' + status[2] + ', ' + status[3]
                             status = chiller.getAlarmState()
                             log_line += ', ' + status[0] + ', ' + status[1] + \
