@@ -86,6 +86,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         self.autoUpdate = False
         self.attachPlotToQWidget()
         self.trigger_value = 0
+        self.trigger_source = 'CH1'
         self.trigger_mul = 1
         self.timer = QtCore.QTimer()
         #self.timer.timeout.connect(self.checkTER)
@@ -177,6 +178,15 @@ class TDS220_Widget(QtWidgets.QWidget):
             self.ui.CH2_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH2_volts_scale[0]] *
                                            self.volts_scale_list[1][self.current_CH2_volts_scale[1]])
             
+            totalQuery = ':TRIGger:MAIn:EDGE:SOUrce?;:TRIGger:MAIn:LEVel?;'
+            [trigger_source, trigger_value] = self.oscilloscope.query(totalQuery).split(';')
+            print(trigger_source)
+            print(trigger_value)
+            self.trigger_value = float(trigger_value)
+            self.trigger_source = trigger_source
+            self.ui.TriggerLevelText.setValue(self.trigger_value)
+            self.ui.TriggerLevelScroll.setValue(max(min(500 + round(self.trigger_value * 1000 / self.trigger_mul), 1000),0))
+            
             self.deviceOpen = True
             self.isSingleRun = False
         
@@ -228,6 +238,7 @@ class TDS220_Widget(QtWidgets.QWidget):
         
     def triggerSourceChanged(self, source):
         self.oscilloscope.write(':TRIGger:MAIn:EDGE:SOURce ' + source)
+        self.trigger_source = source
         
     def set_triggerLevel(self):
         trigger_str = str(self.trigger_value)
@@ -450,7 +461,7 @@ class TDS220_Widget(QtWidgets.QWidget):
 
         
     def updatePlot(self):
-        print(self.autoUpdate)
+        print(self.autoUpdate == False and not self.logger.log_running())
         if self.autoUpdate == False and not self.logger.log_running():
             for button in self.buttonList_:
                 button.setDisabled(True)
