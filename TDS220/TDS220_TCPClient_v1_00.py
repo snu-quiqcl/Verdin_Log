@@ -275,7 +275,7 @@ class TDS220(QtCore.QObject):
         self.write(':AUTOSet EXECUTE;')
         time.sleep(1)
         self.write(':TRIGger:MAIn:EDGE:SOURce ' + self.parent.trigger_source)
-        self.write('TRIGger:MAIn:LEVel ' + str(self.parent.trigger_value))
+        self.write(':TRIGger:MAIn:LEVel ' + str(self.parent.trigger_value))
         self.write(':CH1:SCALE '+self.parent.volts_scale_list[2][self.parent.current_CH1_volts_scale[0]]\
                                 +self.parent.volts_scale_list[3][self.parent.current_CH1_volts_scale[1]]+';')
         self.write(':CH2:SCALE '+self.parent.volts_scale_list[2][self.parent.current_CH2_volts_scale[0]]\

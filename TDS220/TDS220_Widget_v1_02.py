@@ -151,8 +151,6 @@ class TDS220_Widget(QtWidgets.QWidget):
                         * self.horizontal_scale_list[1][j_]:
                             self.current_horizontal_scale = [i_,j_]
             
-            self.ui.HorizontalScale_Val.display(self.volts_scale_list[0][self.current_CH1_volts_scale[0]] *
-                                           self.volts_scale_list[1][self.current_CH1_volts_scale[1]])
                             
             totalQuery = ':CH1:SCAle?;'
             [ch1_scale] = self.oscilloscope.query(totalQuery).split(';')
@@ -163,8 +161,6 @@ class TDS220_Widget(QtWidgets.QWidget):
                         * self.volts_scale_list[1][j_]:
                             self.current_CH1_volts_scale = [i_,j_]
                             
-            self.ui.CH1_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH1_volts_scale[0]] *
-                                           self.volts_scale_list[1][self.current_CH1_volts_scale[1]])
                             
             totalQuery = ':CH2:SCAle?;'
             [ch2_scale] = self.oscilloscope.query(totalQuery).split(';')
@@ -175,8 +171,6 @@ class TDS220_Widget(QtWidgets.QWidget):
                         * self.volts_scale_list[1][j_]:
                             self.current_CH2_volts_scale = [i_,j_]
             
-            self.ui.CH2_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH2_volts_scale[0]] *
-                                           self.volts_scale_list[1][self.current_CH2_volts_scale[1]])
             
             totalQuery = ':TRIGger:MAIn:EDGE:SOUrce?;:TRIGger:MAIn:LEVel?;'
             [trigger_source, trigger_value] = self.oscilloscope.query(totalQuery).split(';')
@@ -184,8 +178,8 @@ class TDS220_Widget(QtWidgets.QWidget):
             print(trigger_value)
             self.trigger_value = float(trigger_value)
             self.trigger_source = trigger_source
-            self.ui.TriggerLevelText.setValue(self.trigger_value)
-            self.ui.TriggerLevelScroll.setValue(max(min(500 + round(self.trigger_value * 1000 / self.trigger_mul), 1000),0))
+            
+            self.set_text_value()
             
             self.deviceOpen = True
             self.isSingleRun = False
@@ -232,6 +226,20 @@ class TDS220_Widget(QtWidgets.QWidget):
     
     def AutoSet(self):
         self.oscilloscope.write(':AUTOSet EXECUTE')
+        time.sleep(1)
+        self.updateParameterStatus()
+        self.set_text_value()
+        
+    def set_text_value(self):
+        self.ui.TriggerLevelText.setValue(self.trigger_value)
+        self.ui.TriggerLevelScroll.setValue(max(min(500 + round(self.trigger_value * 1000 / self.trigger_mul), 1000),0))
+        self.ui.CH1_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH1_volts_scale[0]] *
+                                       self.volts_scale_list[1][self.current_CH1_volts_scale[1]])
+        self.ui.CH2_VoltsScale_Val.display(self.volts_scale_list[0][self.current_CH2_volts_scale[0]] *
+                                       self.volts_scale_list[1][self.current_CH2_volts_scale[1]])
+        self.ui.HorizontalScale_Val.display(self.horizontal_scale_list[0][self.current_horizontal_scale[0]] *
+                                       self.horizontal_scale_list[1][self.current_horizontal_scale[1]])
+        self.ui.triggerSourceComboBox.setCurrentText(self.trigger_source)
         
     def triggerForced(self):
         self.oscilloscope.write(':TRIGger FORCe')
@@ -461,6 +469,7 @@ class TDS220_Widget(QtWidgets.QWidget):
 
         
     def updatePlot(self):
+        print('STATUS:')
         print(self.autoUpdate == False and not self.logger.log_running())
         if self.autoUpdate == False and not self.logger.log_running():
             for button in self.buttonList_:
